@@ -9,6 +9,7 @@
 import type { Rule } from "../types.js";
 import { titlePresent } from "./title-present.js";
 import { descriptionPresent } from "./description-present.js";
+import { singleH1 } from "./single-h1.js";
 
 /** All built-in rules, in no particular order. */
-export const builtinRules: Rule[] = [titlePresent, descriptionPresent];
+export const builtinRules: Rule[] = [titlePresent, descriptionPresent, singleH1];
