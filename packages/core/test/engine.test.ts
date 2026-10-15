@@ -133,6 +133,7 @@ describe("engine", () => {
               "description-present": "warning",
               "single-h1": "warning",
               "canonical-present": "warning",
+              "lang-attribute": "warning",
             },
           },
         },
