@@ -7,6 +7,7 @@ const GOOD_HTML = `<!DOCTYPE html>
   <meta charset="utf-8">
   <title>A Perfectly Valid Page Title Here</title>
   <meta name="description" content="This is a perfectly valid meta description that is long enough to pass the minimum threshold.">
+  <link rel="canonical" href="https://example.com/">
 </head>
 <body>
   <h1>Main Heading</h1>
@@ -128,6 +129,7 @@ describe("engine", () => {
               "title-present": "warning",
               "description-present": "warning",
               "single-h1": "warning",
+              "canonical-present": "warning",
             },
           },
         },
