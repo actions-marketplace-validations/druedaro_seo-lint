@@ -6,6 +6,7 @@ import { canonicalPresent } from "./canonical-present.js";
 import { ogTagsComplete } from "./og-tags-complete.js";
 import { headingOrder } from "./heading-order.js";
 import { imgAltPresent } from "./img-alt-present.js";
+import { langAttribute } from "./lang-attribute.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -15,4 +16,5 @@ export const builtinRules: Rule[] = [
   ogTagsComplete,
   headingOrder,
   imgAltPresent,
+  langAttribute,
 ];
