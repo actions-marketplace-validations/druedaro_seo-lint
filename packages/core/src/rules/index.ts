@@ -4,6 +4,7 @@ import { descriptionPresent } from "./description-present.js";
 import { singleH1 } from "./single-h1.js";
 import { canonicalPresent } from "./canonical-present.js";
 import { ogTagsComplete } from "./og-tags-complete.js";
+import { headingOrder } from "./heading-order.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -11,4 +12,5 @@ export const builtinRules: Rule[] = [
   singleH1,
   canonicalPresent,
   ogTagsComplete,
+  headingOrder,
 ];
