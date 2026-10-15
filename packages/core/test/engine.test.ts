@@ -8,6 +8,9 @@ const GOOD_HTML = `<!DOCTYPE html>
   <title>A Perfectly Valid Page Title Here</title>
   <meta name="description" content="This is a perfectly valid meta description that is long enough to pass the minimum threshold.">
   <link rel="canonical" href="https://example.com/">
+  <meta property="og:title" content="A Perfectly Valid Page Title Here">
+  <meta property="og:description" content="This is a perfectly valid meta description that is long enough to pass the minimum threshold.">
+  <meta property="og:image" content="https://example.com/og-image.jpg">
 </head>
 <body>
   <h1>Main Heading</h1>
