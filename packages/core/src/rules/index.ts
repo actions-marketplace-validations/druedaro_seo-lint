@@ -7,6 +7,7 @@ import { ogTagsComplete } from "./og-tags-complete.js";
 import { headingOrder } from "./heading-order.js";
 import { imgAltPresent } from "./img-alt-present.js";
 import { langAttribute } from "./lang-attribute.js";
+import { hreflangValidCodes } from "./hreflang-valid-codes.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -17,4 +18,5 @@ export const builtinRules: Rule[] = [
   headingOrder,
   imgAltPresent,
   langAttribute,
+  hreflangValidCodes,
 ];
