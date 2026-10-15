@@ -1,40 +1,19 @@
-/**
- * parser.ts — thin wrapper over parse5 with cheerio-style helpers.
- *
- * Why parse5 and not cheerio?
- * parse5 implements the WHATWG HTML parsing algorithm, so it handles
- * malformed HTML the same way browsers do. Cheerio wraps htmlparser2 which
- * takes shortcuts that can produce different trees for edge-case markup.
- * Since seo-lint analyses real build output (which can be messy), fidelity
- * to the browser matters more than API convenience.
- *
- * The helpers below provide the convenience we lose by not using cheerio,
- * without pulling in an extra dependency.
- */
-
 import * as parse5 from "parse5";
-import type {
-  Document,
-  Element,
-  ChildNode,
-  TextNode,
-  ParentNode,
-} from "parse5/dist/tree-adapters/default.js";
+import type { DefaultTreeAdapterTypes, Token } from "parse5";
 
-// ---------------------------------------------------------------------------
-// Parse
-// ---------------------------------------------------------------------------
+export type Document = DefaultTreeAdapterTypes.Document;
+export type Element = DefaultTreeAdapterTypes.Element;
+export type ChildNode = DefaultTreeAdapterTypes.ChildNode;
+export type TextNode = DefaultTreeAdapterTypes.TextNode;
+export type ParentNode = DefaultTreeAdapterTypes.ParentNode;
+export type CommentNode = DefaultTreeAdapterTypes.CommentNode;
+export type Node = DefaultTreeAdapterTypes.Node;
+export type Attribute = Token.Attribute;
 
-/** Parse an HTML string into a parse5 Document. */
 export function parseHtml(html: string): Document {
   return parse5.parse(html, { sourceCodeLocationInfo: true });
 }
 
-// ---------------------------------------------------------------------------
-// Traversal helpers
-// ---------------------------------------------------------------------------
-
-/** Depth-first walk of the tree, yielding every Element node. */
 export function* walkElements(node: ParentNode): Generator<Element> {
   for (const child of node.childNodes ?? []) {
     if (isElement(child)) {
@@ -44,7 +23,6 @@ export function* walkElements(node: ParentNode): Generator<Element> {
   }
 }
 
-/** Find all elements matching a tag name (case-insensitive). */
 export function querySelectorAll(
   root: ParentNode,
   tagName: string,
@@ -59,7 +37,6 @@ export function querySelectorAll(
   return results;
 }
 
-/** Find the first element matching a tag name, or `undefined`. */
 export function querySelector(
   root: ParentNode,
   tagName: string,
@@ -73,30 +50,19 @@ export function querySelector(
   return undefined;
 }
 
-// ---------------------------------------------------------------------------
-// Attribute helpers
-// ---------------------------------------------------------------------------
-
-/** Get an attribute value by name, or `undefined` if absent. */
 export function getAttribute(el: Element, name: string): string | undefined {
   const attr = el.attrs.find(
-    (a) => a.name.toLowerCase() === name.toLowerCase(),
+    (a: Attribute) => a.name.toLowerCase() === name.toLowerCase(),
   );
   return attr?.value;
 }
 
-/** Check whether an element has a given attribute (even if empty). */
 export function hasAttribute(el: Element, name: string): boolean {
   return el.attrs.some(
-    (a) => a.name.toLowerCase() === name.toLowerCase(),
+    (a: Attribute) => a.name.toLowerCase() === name.toLowerCase(),
   );
 }
 
-// ---------------------------------------------------------------------------
-// Text helpers
-// ---------------------------------------------------------------------------
-
-/** Get the concatenated text content of an element and its descendants. */
 export function getTextContent(node: ParentNode): string {
   let text = "";
   for (const child of node.childNodes ?? []) {
@@ -109,10 +75,6 @@ export function getTextContent(node: ParentNode): string {
   return text;
 }
 
-// ---------------------------------------------------------------------------
-// Type guards
-// ---------------------------------------------------------------------------
-
 export function isElement(node: ChildNode): node is Element {
   return "tagName" in node;
 }
@@ -121,11 +83,6 @@ export function isTextNode(node: ChildNode): node is TextNode {
   return node.nodeName === "#text";
 }
 
-// ---------------------------------------------------------------------------
-// Location helpers
-// ---------------------------------------------------------------------------
-
-/** Extract 1-based line and column from a parse5 element, if available. */
 export function getLocation(
   el: Element,
 ): { line: number; column: number } | undefined {

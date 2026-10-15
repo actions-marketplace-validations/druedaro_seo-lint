@@ -1,11 +1,3 @@
-/**
- * @seo-lint/core — public API surface.
- *
- * Re-exports everything consumers need: types, engine functions, parser
- * utilities, and the built-in rule registry.
- */
-
-// Types
 export type {
   Severity,
   Category,
@@ -18,11 +10,9 @@ export type {
   LintResult,
 } from "./types.js";
 
-// Engine
 export { lintFile, lintFiles } from "./engine.js";
 export type { LintFileOptions } from "./engine.js";
 
-// Parser utilities (for custom rules)
 export {
   parseHtml,
   querySelector,
@@ -35,6 +25,15 @@ export {
   isElement,
   isTextNode,
 } from "./parser.js";
+export type {
+  Document,
+  Element,
+  ParentNode,
+  ChildNode,
+  TextNode,
+  CommentNode,
+  Node,
+  Attribute,
+} from "./parser.js";
 
-// Built-in rules
 export { builtinRules } from "./rules/index.js";

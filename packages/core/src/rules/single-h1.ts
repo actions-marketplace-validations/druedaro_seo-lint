@@ -1,18 +1,5 @@
-/**
- * single-h1 — checks that each page has exactly one <h1> element.
- *
- * Why exactly one?
- * While HTML5 technically allows multiple h1s in sectioning content, Google's
- * John Mueller has confirmed that a single h1 per page is the recommended
- * practice. Multiple h1s dilute the topical signal and confuse screen
- * readers about the page hierarchy.
- *
- * @see https://developers.google.com/search/docs/appearance/title-link
- */
-
-import type { Document } from "parse5/dist/tree-adapters/default.js";
 import type { Rule, RuleContext, Finding } from "../types.js";
-import { querySelectorAll, getTextContent, getLocation } from "../parser.js";
+import { querySelectorAll, getTextContent, getLocation, type Document } from "../parser.js";
 
 export const singleH1: Rule = {
   meta: {
@@ -37,7 +24,6 @@ export const singleH1: Rule = {
         filePath: ctx.filePath,
       });
     } else if (h1s.length > 1) {
-      // Report each extra h1 so the user can decide which to keep.
       for (const h1 of h1s.slice(1)) {
         const loc = getLocation(h1);
         const fullText = getTextContent(h1).trim();
@@ -52,7 +38,6 @@ export const singleH1: Rule = {
         });
       }
     } else {
-      // Exactly one h1 — check it's not empty.
       const h1 = h1s[0]!;
       const text = getTextContent(h1).trim();
       if (text.length === 0) {

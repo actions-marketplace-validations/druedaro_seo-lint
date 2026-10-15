@@ -1,18 +1,5 @@
-/**
- * description-present — checks that a <meta name="description"> element
- * exists and its content is between 50 and 160 characters.
- *
- * Why 50–160?
- * Google truncates snippets around 155–160 chars. Descriptions under 50
- * chars don't give Google enough to show a useful snippet, increasing the
- * chance it generates its own (which may not match the page intent).
- *
- * @see https://developers.google.com/search/docs/appearance/snippet
- */
-
-import type { Document } from "parse5/dist/tree-adapters/default.js";
 import type { Rule, RuleContext, Finding } from "../types.js";
-import { querySelectorAll, getAttribute, getLocation } from "../parser.js";
+import { querySelectorAll, getAttribute, getLocation, type Document } from "../parser.js";
 
 const MIN_LENGTH = 50;
 const MAX_LENGTH = 160;

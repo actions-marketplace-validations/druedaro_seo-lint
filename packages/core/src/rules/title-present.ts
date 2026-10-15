@@ -1,18 +1,5 @@
-/**
- * title-present — checks that a <title> element exists and its text content
- * is between 10 and 60 characters.
- *
- * Why 10–60?
- * Google typically truncates titles at ~60 chars in SERPs. Titles shorter
- * than 10 chars rarely describe a page meaningfully and Google may rewrite
- * them. These thresholds match industry consensus (Moz, Ahrefs, etc.).
- *
- * @see https://developers.google.com/search/docs/appearance/title-link
- */
-
-import type { Document } from "parse5/dist/tree-adapters/default.js";
 import type { Rule, RuleContext, Finding } from "../types.js";
-import { querySelector, getTextContent, getLocation } from "../parser.js";
+import { querySelector, getTextContent, getLocation, type Document } from "../parser.js";
 
 const MIN_LENGTH = 10;
 const MAX_LENGTH = 60;
