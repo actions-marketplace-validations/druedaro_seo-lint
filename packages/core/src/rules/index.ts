@@ -3,10 +3,12 @@ import { titlePresent } from "./title-present.js";
 import { descriptionPresent } from "./description-present.js";
 import { singleH1 } from "./single-h1.js";
 import { canonicalPresent } from "./canonical-present.js";
+import { ogTagsComplete } from "./og-tags-complete.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
   singleH1,
   canonicalPresent,
+  ogTagsComplete,
 ];
