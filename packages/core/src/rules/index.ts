@@ -14,8 +14,9 @@ import { jsonldValidSyntax } from "./jsonld-valid-syntax.js";
 import { jsonldValidType } from "./jsonld-valid-type.js";
 import { jsonldRequiredFields } from "./jsonld-required-fields.js";
 import { noBrokenInternalLinks } from "./no-broken-internal-links.js";
+import { sitemapValidUrls } from "./sitemap-valid-urls.js";
+import { sitemapRobotsConsistency } from "./sitemap-robots-consistency.js";
 import { noRedirectChains } from "./no-redirect-chains.js";
-
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
@@ -32,5 +33,7 @@ export const builtinRules: Rule[] = [
   jsonldValidType,
   jsonldRequiredFields,
   noBrokenInternalLinks,
+  sitemapValidUrls,
+  sitemapRobotsConsistency,
   noRedirectChains,
 ];
