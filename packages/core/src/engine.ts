@@ -80,7 +80,7 @@ export function lintFiles(
 
   const getFileContent = (path: string): string | undefined => {
     if (filesMap.has(path)) return filesMap.get(path);
-    const clean = path.replace(/^\//, "");
+    const clean = path.replace(/^\//, "").replace(/\/$/, "");
     if (filesMap.has(clean)) return filesMap.get(clean);
     if (filesMap.has(`${clean}/index.html`)) return filesMap.get(`${clean}/index.html`);
     if (filesMap.has(`${clean}.html`)) return filesMap.get(`${clean}.html`);
