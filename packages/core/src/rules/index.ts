@@ -11,6 +11,7 @@ import { hreflangValidCodes } from "./hreflang-valid-codes.js";
 import { hreflangSelfReference } from "./hreflang-self-reference.js";
 import { hreflangReciprocal } from "./hreflang-reciprocal.js";
 import { jsonldValidSyntax } from "./jsonld-valid-syntax.js";
+import { jsonldValidType } from "./jsonld-valid-type.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -25,4 +26,5 @@ export const builtinRules: Rule[] = [
   hreflangSelfReference,
   hreflangReciprocal,
   jsonldValidSyntax,
+  jsonldValidType,
 ];
