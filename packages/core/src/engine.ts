@@ -26,10 +26,11 @@ export interface LintFileOptions {
   allFiles: string[];
   isMultiLang: boolean;
   config?: SeoLintConfig;
+  getFileContent?: (path: string) => string | undefined;
 }
 
 export function lintFile(options: LintFileOptions): Finding[] {
-  const { filePath, html, allFiles, isMultiLang, config } = options;
+  const { filePath, html, allFiles, isMultiLang, config, getFileContent } = options;
 
   const doc: Document = parseHtml(html);
 
@@ -38,6 +39,7 @@ export function lintFile(options: LintFileOptions): Finding[] {
     html,
     allFiles,
     isMultiLang,
+    getFileContent,
   };
 
   const findings: Finding[] = [];
@@ -71,6 +73,20 @@ export function lintFiles(
 ): LintResult {
   const allFindings: Finding[] = [];
 
+  const filesMap = new Map<string, string>();
+  for (const file of files) {
+    filesMap.set(file.filePath, file.html);
+  }
+
+  const getFileContent = (path: string): string | undefined => {
+    if (filesMap.has(path)) return filesMap.get(path);
+    const clean = path.replace(/^\//, "").replace(/\/$/, "");
+    if (filesMap.has(clean)) return filesMap.get(clean);
+    if (filesMap.has(`${clean}/index.html`)) return filesMap.get(`${clean}/index.html`);
+    if (filesMap.has(`${clean}.html`)) return filesMap.get(`${clean}.html`);
+    return undefined;
+  };
+
   for (const file of files) {
     const findings = lintFile({
       filePath: file.filePath,
@@ -78,6 +94,7 @@ export function lintFiles(
       allFiles: options.allFiles,
       isMultiLang: options.isMultiLang,
       config: options.config,
+      getFileContent,
     });
     allFindings.push(...findings);
   }

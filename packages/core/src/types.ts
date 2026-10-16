@@ -26,6 +26,7 @@ export interface RuleContext {
   html: string;
   allFiles: string[];
   isMultiLang: boolean;
+  getFileContent?: (path: string) => string | undefined;
 }
 
 export interface RuleMeta {
