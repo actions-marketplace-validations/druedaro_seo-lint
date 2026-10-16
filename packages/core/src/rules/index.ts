@@ -10,6 +10,7 @@ import { langAttribute } from "./lang-attribute.js";
 import { hreflangValidCodes } from "./hreflang-valid-codes.js";
 import { hreflangSelfReference } from "./hreflang-self-reference.js";
 import { hreflangReciprocal } from "./hreflang-reciprocal.js";
+import { jsonldValidSyntax } from "./jsonld-valid-syntax.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -23,4 +24,5 @@ export const builtinRules: Rule[] = [
   hreflangValidCodes,
   hreflangSelfReference,
   hreflangReciprocal,
+  jsonldValidSyntax,
 ];
