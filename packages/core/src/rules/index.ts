@@ -9,6 +9,7 @@ import { imgAltPresent } from "./img-alt-present.js";
 import { langAttribute } from "./lang-attribute.js";
 import { hreflangValidCodes } from "./hreflang-valid-codes.js";
 import { hreflangSelfReference } from "./hreflang-self-reference.js";
+import { hreflangReciprocal } from "./hreflang-reciprocal.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -21,4 +22,5 @@ export const builtinRules: Rule[] = [
   langAttribute,
   hreflangValidCodes,
   hreflangSelfReference,
+  hreflangReciprocal,
 ];
