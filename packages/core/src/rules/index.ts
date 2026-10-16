@@ -13,6 +13,8 @@ import { hreflangReciprocal } from "./hreflang-reciprocal.js";
 import { jsonldValidSyntax } from "./jsonld-valid-syntax.js";
 import { jsonldValidType } from "./jsonld-valid-type.js";
 import { jsonldRequiredFields } from "./jsonld-required-fields.js";
+import { noBrokenInternalLinks } from "./no-broken-internal-links.js";
+import { noRedirectChains } from "./no-redirect-chains.js";
 
 export const builtinRules: Rule[] = [
   titlePresent,
@@ -29,4 +31,6 @@ export const builtinRules: Rule[] = [
   jsonldValidSyntax,
   jsonldValidType,
   jsonldRequiredFields,
+  noBrokenInternalLinks,
+  noRedirectChains,
 ];
