@@ -18,6 +18,7 @@ import { sitemapValidUrls } from "./sitemap-valid-urls.js";
 import { sitemapRobotsConsistency } from "./sitemap-robots-consistency.js";
 import { noRedirectChains } from "./no-redirect-chains.js";
 import { llmsTxtPresent } from "./llms-txt-present.js";
+import { aiCrawlerAccess } from "./ai-crawler-access.js";
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
@@ -38,4 +39,5 @@ export const builtinRules: Rule[] = [
   sitemapRobotsConsistency,
   noRedirectChains,
   llmsTxtPresent,
+  aiCrawlerAccess,
 ];
