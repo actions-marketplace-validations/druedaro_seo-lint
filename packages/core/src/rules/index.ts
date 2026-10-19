@@ -17,6 +17,7 @@ import { noBrokenInternalLinks } from "./no-broken-internal-links.js";
 import { sitemapValidUrls } from "./sitemap-valid-urls.js";
 import { sitemapRobotsConsistency } from "./sitemap-robots-consistency.js";
 import { noRedirectChains } from "./no-redirect-chains.js";
+import { llmsTxtPresent } from "./llms-txt-present.js";
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
@@ -36,4 +37,5 @@ export const builtinRules: Rule[] = [
   sitemapValidUrls,
   sitemapRobotsConsistency,
   noRedirectChains,
+  llmsTxtPresent,
 ];
