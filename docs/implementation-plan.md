@@ -121,6 +121,11 @@ Esto son 21 reglas razonadas. Si al implementar alguna resulta poco fiable o con
 ## 7. Documentación y publicación
 
 - README que empieza por el problema (qué rompe el SEO de un build y cómo esto lo detecta antes de desplegar), con un ejemplo de salida real, no una lista de features.
+- Guía completa de CI/CD (`docs/ci-cd.md`) y recetas en el README con snippets mínimos listos para copiar/pegar:
+  - GitLab CI (`.gitlab-ci.yml`) con integración de reportes
+  - Bitbucket Pipelines (`bitbucket-pipelines.yml`)
+  - Azure DevOps Pipelines (`azure-pipelines.yml`)
+  - Jenkins (`Jenkinsfile`)
 - Página de cada regla en `docs/rules/` explicando qué comprueba y por qué importa — esto además te sirve como banco de conocimiento para entrevistas.
 - Publicación en npm con provenance y `CHANGELOG.md` siguiendo semver desde la v0.1.0.
 - Un post técnico (dev.to/Hashnode) una vez la v1 esté publicada, igual que hiciste con Trainlog.
