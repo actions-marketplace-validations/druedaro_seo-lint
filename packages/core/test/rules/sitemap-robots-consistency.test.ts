@@ -3,7 +3,6 @@ import { parseHtml } from '../../src/parser.js';
 import { sitemapRobotsConsistency } from '../../src/rules/sitemap-robots-consistency.js';
 import type { RuleContext } from '../../src/types.js';
 
-// Dummy HTML document (content not used by rule)
 const dummyDoc = parseHtml('<html><head></head><body></body></html>');
 
 function createCtx(files: Record<string, string>): RuleContext {

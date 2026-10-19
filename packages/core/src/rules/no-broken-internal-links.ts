@@ -7,11 +7,6 @@ import {
 } from "../parser.js";
 import * as path from "path";
 
-/**
- * no-broken-internal-links rule
- * Checks that every internal <a href> points to an existing file in the
- * analysed `dist` directory.
- */
 export const noBrokenInternalLinks: Rule = {
   meta: {
     id: "no-broken-internal-links",
@@ -30,22 +25,17 @@ export const noBrokenInternalLinks: Rule = {
       if (!href) continue;
       const raw = href.trim();
 
-      // Skip external URLs (http:, https:, mailto:, tel:, etc.)
       if (/^[a-z][a-z0-9+.-]*:/i.test(raw) && !raw.startsWith("/")) continue;
-      // Skip protocol‑relative URLs (//example.com)
       if (raw.startsWith("//")) continue;
 
-      // Remove query string and hash fragment, safe string handling
       const cleanHref = raw.split(/[?#]/)[0];
-      if (!cleanHref) continue; // ignore empty or hash-only links
+      if (!cleanHref) continue;
 
-      // Resolve the path relative to the current file
       const baseDir = path.dirname(ctx.filePath);
       const resolvedPath = path.normalize(
         path.isAbsolute(cleanHref) ? cleanHref.slice(1) : path.join(baseDir, cleanHref)
       );
 
-      // The list of files available in the dist folder comes from ctx.allFiles
       if (!ctx.allFiles.includes(resolvedPath)) {
         const loc = getLocation(el);
         findings.push({

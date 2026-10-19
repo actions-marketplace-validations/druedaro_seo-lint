@@ -29,9 +29,7 @@ function matchesPage(targetHref: string, canonicalHref: string | undefined, file
       if (targetParsed.pathname.replace(/\/$/, "") === canonicalParsed.pathname.replace(/\/$/, "")) {
         return true;
       }
-    } catch {
-      // not a full URL
-    }
+    } catch {}
   }
 
   const cleanFile = filePath.replace(/\/index\.html$/, "").replace(/\.html$/, "").replace(/^\//, "");

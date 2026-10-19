@@ -20,9 +20,7 @@ function matchesSelf(hreflangHref: string, selfCanonical: string | undefined, fi
       if (targetParsed.pathname.replace(/\/$/, "") === canonicalParsed.pathname.replace(/\/$/, "")) {
         return true;
       }
-    } catch {
-      // not a full URL
-    }
+    } catch {}
   }
 
   const cleanFile = filePath.replace(/\/index\.html$/, "").replace(/\.html$/, "");

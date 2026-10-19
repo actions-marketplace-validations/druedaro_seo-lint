@@ -1,5 +1,3 @@
-// Rule: sitemap-robots-consistency
-// Ensures that URLs listed in sitemap.xml are not blocked by robots.txt Disallow rules.
 import type { Rule, RuleContext, Finding, RuleMeta } from "../types.js";
 
 const meta: RuleMeta = {
@@ -9,18 +7,17 @@ const meta: RuleMeta = {
   description: "URLs listed in sitemap.xml must not be blocked by robots.txt",
 };
 
-/** Extract URLs from a sitemap XML string. */
 function extractSitemapUrls(content: string): string[] {
   const urls: string[] = [];
   const urlRegex = /<loc>([^<]*)<\/loc>/gi;
   let match: RegExpExecArray | null;
   while ((match = urlRegex.exec(content)) !== null) {
-    urls.push(match[1].trim());
+    const url = match[1];
+    if (url) urls.push(url.trim());
   }
   return urls;
 }
 
-/** Extract Disallow paths from robots.txt content. */
 function extractDisallowPaths(content: string): string[] {
   const paths: string[] = [];
   const lines = content.split(/\r?\n/);

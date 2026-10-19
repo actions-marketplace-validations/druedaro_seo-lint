@@ -1,5 +1,3 @@
-// Rule: sitemap-valid-urls
-// Ensures that URLs listed in sitemap.xml correspond to existing files in the dist folder.
 import type { Rule, RuleContext, Finding, RuleMeta } from "../types.js";
 
 const meta: RuleMeta = {
@@ -9,13 +7,13 @@ const meta: RuleMeta = {
   description: "All URLs in sitemap.xml must map to an existing file in the analysed dist folder",
 };
 
-/** Extract URLs from a sitemap XML string. */
 function extractSitemapUrls(content: string): string[] {
   const urls: string[] = [];
   const urlRegex = /<loc>([^<]*)<\/loc>/gi;
   let match: RegExpExecArray | null;
   while ((match = urlRegex.exec(content)) !== null) {
-    urls.push(match[1].trim());
+    const url = match[1];
+    if (url) urls.push(url.trim());
   }
   return urls;
 }

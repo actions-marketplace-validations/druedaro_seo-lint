@@ -3,7 +3,6 @@ import { parseHtml } from '../../src/parser.js';
 import { sitemapValidUrls } from '../../src/rules/sitemap-valid-urls.js';
 import type { RuleContext } from '../../src/types.js';
 
-// Dummy document (content not used by rule)
 const dummyDoc = parseHtml('<html><head></head><body></body></html>');
 
 function createCtx(files: Record<string, string>, allFiles: string[]): RuleContext {
