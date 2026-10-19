@@ -46,7 +46,8 @@ export interface Rule {
 export type RuleConfigEntry =
   | Severity
   | "off"
-  | [Severity];
+  | [Severity]
+  | [Severity, Record<string, unknown>];
 
 export interface SeoLintConfig {
   dist?: string;
