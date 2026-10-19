@@ -103,7 +103,6 @@ describe("hasAttribute", () => {
   it("returns true for empty attributes", () => {
     const doc = parseHtml(SAMPLE_HTML);
     const imgs = querySelectorAll(doc, "img");
-    // Second img has alt=""
     expect(hasAttribute(imgs[1]!, "alt")).toBe(true);
   });
 
@@ -147,7 +146,6 @@ describe("walkElements", () => {
     expect(tags).toContain("div");
     expect(tags).toContain("p");
     expect(tags).toContain("span");
-    // div comes before p which comes before span (depth-first)
     expect(tags.indexOf("div")).toBeLessThan(tags.indexOf("p"));
     expect(tags.indexOf("p")).toBeLessThan(tags.indexOf("span"));
   });

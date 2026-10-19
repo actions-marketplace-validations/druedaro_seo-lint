@@ -3,7 +3,7 @@ import { parseHtml } from "../../src/parser.js";
 import { jsonldRequiredFields } from "../../src/rules/jsonld-required-fields.js";
 import type { RuleContext } from "../../src/types.js";
 
-const ctx: RuleContext = { filePath: "test.html" };
+const ctx: RuleContext = { filePath: "test.html", html: "", allFiles: [], isMultiLang: false };
 
 function html(jsonld: unknown): string {
   return `<html><head><script type="application/ld+json">${JSON.stringify(jsonld)}</script></head><body></body></html>`;

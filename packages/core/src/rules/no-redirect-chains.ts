@@ -7,10 +7,6 @@ import {
 } from "../parser.js";
 import * as path from "path";
 
-/**
- * no-redirect-chains rule
- * Detects internal links that point to a page that itself redirects (via meta refresh).
- */
 export const noRedirectChains: Rule = {
   meta: {
     id: "no-redirect-chains",
@@ -29,11 +25,9 @@ export const noRedirectChains: Rule = {
       if (!href) continue;
       const raw = href.trim();
 
-      // Skip external and protocol‑relative URLs as before
       if (/^[a-z][a-z0-9+.-]*:/i.test(raw) && !raw.startsWith("/")) continue;
       if (raw.startsWith("//")) continue;
 
-      // Clean query and hash
       const cleanHref = raw.split(/[?#]/)[0];
       if (!cleanHref) continue;
 
@@ -42,14 +36,11 @@ export const noRedirectChains: Rule = {
         path.isAbsolute(cleanHref) ? cleanHref.slice(1) : path.join(baseDir, cleanHref)
       );
 
-      // If target does not exist we let the other rule handle it
       if (!ctx.allFiles.includes(resolvedPath)) continue;
 
-      // Retrieve target file content if possible
       const targetContent = ctx.getFileContent?.(resolvedPath);
       if (!targetContent) continue;
 
-      // Simple detection of meta refresh
       const hasMetaRefresh = /<meta\s+[^>]*http-equiv\s*=\s*(["'])refresh\1/i.test(targetContent);
       if (hasMetaRefresh) {
         const loc = getLocation(el);
