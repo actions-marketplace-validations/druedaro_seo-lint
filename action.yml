@@ -1,0 +1,40 @@
+name: 'seo-lint'
+description: 'Fast, zero-browser technical SEO and GEO linter for static HTML builds'
+author: 'David Rueda'
+branding:
+  icon: 'search'
+  color: 'blue'
+
+inputs:
+  dir:
+    description: 'Directory containing static HTML build files to audit'
+    required: false
+    default: 'dist'
+  config:
+    description: 'Path to custom seo-lint configuration file'
+    required: false
+  max-warnings:
+    description: 'Maximum number of warnings before exiting with code 1'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run seo-lint
+      shell: bash
+      run: |
+        ARGS="${{ inputs.dir }} --reporter github"
+        if [ -n "${{ inputs.config }}" ]; then
+          ARGS="$ARGS --config ${{ inputs.config }}"
+        fi
+        if [ -n "${{ inputs.max-warnings }}" ]; then
+          ARGS="$ARGS --max-warnings ${{ inputs.max-warnings }}"
+        fi
+
+        if [ -f "$GITHUB_ACTION_PATH/packages/cli/dist/index.js" ]; then
+          node "$GITHUB_ACTION_PATH/packages/cli/dist/index.js" $ARGS
+        elif [ -f "./node_modules/.bin/seo-lint" ]; then
+          ./node_modules/.bin/seo-lint $ARGS
+        else
+          npx --yes seo-lint@latest $ARGS
+        fi

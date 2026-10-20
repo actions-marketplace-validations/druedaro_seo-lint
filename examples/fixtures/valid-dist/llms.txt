@@ -1,0 +1,5 @@
+# SEO Lint Example Fixture
+
+> High quality static site example fixture for technical SEO and GEO auditing.
+
+- [Home](https://example.com/): Main entrance
