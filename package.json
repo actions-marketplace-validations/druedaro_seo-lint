@@ -1,20 +1,27 @@
 {
   "name": "seo-lint",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "version": "0.1.0",
+  "description": "A powerful SEO linting tool for validating HTML, sitemaps, robots.txt, and more.",
+  "license": "MIT",
+  "private": false,
+  "workspaces": ["packages/*"],
   "scripts": {
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
     "lint": "tsc --noEmit",
-    "clean": "npm run clean --workspaces"
+    "clean": "npm run clean --workspaces",
+    "release": "npm publish --access public"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
   },
-  "engines": {
-    "node": ">=20.0.0"
-  }
+  "engines": {"node": ">=20.0.0"},
+  "publishConfig": {"access": "public"},
+  "files": ["packages/*", "action/**", "README.md", "CHANGELOG.md", "docs/**"],
+  "repository": {"type": "git", "url": "git+https://github.com/druedaro/seo-lint.git"},
+  "homepage": "https://github.com/druedaro/seo-lint#readme",
+  "bugs": {"url": "https://github.com/druedaro/seo-lint/issues"}
 }
+
