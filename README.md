@@ -1,26 +1,28 @@
 # seo-lint
 
-> Linter de SEO técnico y GEO (Generative Engine Optimization) para builds estáticos en CI/CD. Cero navegadores, sin red, ultrarrápido.
+> Technical SEO and GEO (Generative Engine Optimization) linter for static HTML builds in CI/CD. Zero browsers, no network, ultra-fast.
 
 [![CI](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
+[![npm downloads](https://img.shields.io/npm/dm/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
-## El problema
+## The Problem
 
-Una etiqueta `canonical` con URL relativa, un `hreflang` roto sin reciprocidad, un `robots.txt` que bloquea por error las páginas de tu `sitemap.xml`, o una página renderizada únicamente por JavaScript sin contenido estático legible para motores de búsqueda y crawlers de IA.
+A `canonical` tag with a relative URL, a broken `hreflang` without reciprocity, a `robots.txt` that accidentally blocks pages in your `sitemap.xml`, or a page rendered exclusively by JavaScript with no static content readable by search engines and AI crawlers.
 
-Herramientas como Lighthouse o Screaming Frog son excelentes para auditorías puntuales, pero en un pipeline de CI/CD:
-- Son lentas porque requieren levantar un navegador completo (`puppeteer`/`playwright`).
-- Son complejas de configurar como tests deterministas de build.
-- No cubren bien validaciones de reciprocidad de internacionalización (i18n) ni optimizaciones de **GEO** (`llms.txt`, acceso a modelos de IA).
+Tools like Lighthouse or Screaming Frog are excellent for one-off audits, but inside a CI/CD pipeline they are:
+- **Slow** — they need to spin up a full browser (`puppeteer`/`playwright`).
+- **Complex** — hard to configure as deterministic build tests.
+- **Incomplete** — poor coverage of i18n hreflang reciprocity checks and **GEO** optimisations (`llms.txt`, AI model access).
 
-**`seo-lint` audita directamente los archivos HTML generados en tu carpeta de salida (`dist/`, `build/`, `out/`) en milisegundos y falla el build en CI si alguna regla se rompe.**
+**`seo-lint` audits the HTML files generated in your output folder (`dist/`, `build/`, `out/`) in milliseconds and fails the build in CI if any rule is violated.**
 
 ---
 
-## Salida de ejemplo
+## Example Output
 
 ```bash
 $ npx seo-lint dist/
@@ -38,34 +40,34 @@ llms.txt
 ✖ 4 problems (2 errors, 2 warnings) across 14 files.
 ```
 
-Exit code: `1` si hay algún error (o si los warnings superan `--max-warnings`), `0` si todo está limpio.
+Exit code: `1` if there are errors (or if warnings exceed `--max-warnings`), `0` if everything is clean.
 
 ---
 
-## Inicio rápido
+## Quick Start
 
-No requiere instalación previa. Puedes ejecutarlo directamente con tu gestor de paquetes favorito:
+No prior installation needed. Run it directly with your package manager of choice:
 
 ```bash
-# Con npx
+# With npx
 npx seo-lint dist/
 
-# Con pnpm
+# With pnpm
 pnpm dlx seo-lint dist/
 
-# Con yarn
+# With yarn
 yarn dlx seo-lint dist/
 ```
 
-O instalarlo como dependencia de desarrollo:
+Or install it as a dev dependency:
 
 ```bash
 npm install -D seo-lint
-# o con pnpm
+# or with pnpm
 pnpm add -D seo-lint
 ```
 
-Y añadirlo a tus scripts de `package.json`:
+Then add it to your `package.json` scripts:
 
 ```json
 {
@@ -78,49 +80,49 @@ Y añadirlo a tus scripts de `package.json`:
 
 ---
 
-## Catálogo de reglas (21 reglas de la v1)
+## Rule Catalogue (21 rules in v1)
 
 ### Meta
-- `title-present`: `<title>` presente y con longitud recomendada (10–60 caracteres).
-- `description-present`: `<meta name="description">` presente y con longitud adecuada (50–160 caracteres).
-- `canonical-present`: `<link rel="canonical">` presente, absoluto y válido.
-- `og-tags-complete`: `og:title`, `og:description` y `og:image` presentes y completos.
+- `title-present`: `<title>` present and within the recommended length (10–60 chars).
+- `description-present`: `<meta name="description">` present and within adequate length (50–160 chars).
+- `canonical-present`: `<link rel="canonical">` present, absolute, and valid.
+- `og-tags-complete`: `og:title`, `og:description`, and `og:image` present and populated.
 
-### Estructura
-- `single-h1`: Exactamente un único `<h1>` por página.
-- `heading-order`: Jerarquía de encabezados coherente sin saltos de nivel (ej. `h2` a `h4`).
-- `img-alt-present`: Toda imagen de contenido cuenta con atributo `alt` (excluye decorativas con `alt=""`).
-- `lang-attribute`: Atributo `lang` presente en `<html>` con código BCP 47 válido.
+### Structure
+- `single-h1`: Exactly one `<h1>` per page.
+- `heading-order`: Coherent heading hierarchy with no level skips (e.g. `h2` → `h4`).
+- `img-alt-present`: Every content image has an `alt` attribute (decorative images with `alt=""` are excluded).
+- `lang-attribute`: `lang` attribute present on `<html>` with a valid BCP 47 code.
 
-### Internacionalización (i18n)
-*Se activan condicionalmente si el build analizado contiene etiquetas `hreflang`.*
-- `hreflang-reciprocal`: Si la página A referencia a B con hreflang, B debe referenciar de vuelta a A.
-- `hreflang-valid-codes`: Códigos de idioma y región compatibles con ISO 639-1 / BCP 47.
-- `hreflang-self-reference`: Cada página se referencia a sí misma dentro del bloque hreflang.
+### Internationalisation (i18n)
+*Activated conditionally if the analysed build contains `hreflang` tags.*
+- `hreflang-reciprocal`: If page A references B with hreflang, B must reference back to A.
+- `hreflang-valid-codes`: Language and region codes compliant with ISO 639-1 / BCP 47.
+- `hreflang-self-reference`: Each page references itself within its hreflang block.
 
-### Datos estructurados
-- `jsonld-valid-syntax`: Bloques `<script type="application/ld+json">` parsean sin errores de sintaxis JSON.
-- `jsonld-valid-type`: El `@type` existe en el vocabulario oficial de Schema.org.
-- `jsonld-required-fields`: Comprueba campos obligatorios según el tipo (ej. `Article` requiere `headline` y `datePublished`).
+### Structured Data
+- `jsonld-valid-syntax`: `<script type="application/ld+json">` blocks parse without JSON syntax errors.
+- `jsonld-valid-type`: The `@type` exists in the official Schema.org vocabulary.
+- `jsonld-required-fields`: Checks required fields per type (e.g. `Article` requires `headline` and `datePublished`).
 
-### Enlaces
-- `no-broken-internal-links`: Todo enlace interno (`<a href="...">`) resuelve a un archivo real en la carpeta analizada.
-- `no-redirect-chains`: Enlaces internos no apuntan a páginas con redirecciones cliente (meta refresh).
+### Links
+- `no-broken-internal-links`: Every internal link (`<a href="...">`) resolves to a real file in the analysed folder.
+- `no-redirect-chains`: Internal links do not point to pages with client-side redirects (meta refresh).
 
 ### Sitemap & Robots
-- `sitemap-robots-consistency`: URLs presentes en `sitemap.xml` no están bloqueadas por directivas `Disallow` en `robots.txt`.
-- `sitemap-valid-urls`: Todas las URLs declaradas en el sitemap se corresponden con archivos existentes en el build.
+- `sitemap-robots-consistency`: URLs in `sitemap.xml` are not blocked by `Disallow` directives in `robots.txt`.
+- `sitemap-valid-urls`: All URLs declared in the sitemap correspond to existing files in the build.
 
 ### GEO (Generative Engine Optimization)
-- `llms-txt-present`: Detecta o valida `llms.txt` en la raíz con estructura Markdown válida y título H1 principal.
-- `ai-crawler-access`: Verifica que `robots.txt` no bloquee inadvertidamente crawlers de IA conocidos (`GPTBot`, `ClaudeBot`, etc.).
-- `extractable-content`: Comprueba que el contenido principal no dependa exclusivamente de renderizado JavaScript cliente en el navegador.
+- `llms-txt-present`: Detects or validates `llms.txt` at the root with valid Markdown structure and a primary H1 title.
+- `ai-crawler-access`: Checks that `robots.txt` does not inadvertently block known AI crawlers (`GPTBot`, `ClaudeBot`, etc.).
+- `extractable-content`: Verifies that the main content does not depend exclusively on client-side JavaScript rendering.
 
 ---
 
-## Configuración (`seo-lint.config.json`)
+## Configuration (`seo-lint.config.json`)
 
-Puedes personalizar reglas, ignorar rutas o ajustar severidades creando un archivo `seo-lint.config.json` en la raíz de tu proyecto:
+Customise rules, ignore paths, or adjust severities by creating a `seo-lint.config.json` file at the root of your project:
 
 ```json
 {
@@ -138,7 +140,7 @@ Puedes personalizar reglas, ignorar rutas o ajustar severidades creando un archi
 
 ---
 
-## Integración en CI/CD
+## CI/CD Integration
 
 ### GitHub Actions
 
@@ -149,28 +151,28 @@ Puedes personalizar reglas, ignorar rutas o ajustar severidades creando un archi
     max-warnings: 0
 ```
 
-Para ver ejemplos y plantillas listas para copiar y pegar en **GitLab CI/CD**, **Bitbucket Pipelines**, **Azure DevOps** y **Jenkins**, consulta la [Guía completa de CI/CD](docs/ci-cd.md).
+For copy-paste-ready examples for **GitLab CI/CD**, **Bitbucket Pipelines**, **Azure DevOps**, and **Jenkins**, see the [full CI/CD guide](docs/ci-cd.md).
 
 ---
 
-## Opciones de línea de comandos (CLI)
+## CLI Options
 
 ```
-Uso: seo-lint [directorio] [opciones]
+Usage: seo-lint [directory] [options]
 
-Argumentos:
-  directorio              Directorio a auditar (por defecto: "dist")
+Arguments:
+  directory               Directory to audit (default: "dist")
 
-Opciones:
-  -c, --config <path>    Ruta a archivo de configuración personalizado
-  -r, --reporter <type>  Formato de salida: "text", "json", "github" (defecto: "text")
-  --max-warnings <num>   Código de salida 1 si los warnings exceden este número
-  -v, --version          Muestra la versión instalada
-  -h, --help             Muestra la ayuda
+Options:
+  -c, --config <path>    Path to a custom configuration file
+  -r, --reporter <type>  Output format: "text", "json", "github" (default: "text")
+  --max-warnings <num>   Exit code 1 if warnings exceed this number
+  -v, --version          Show installed version
+  -h, --help             Show help
 ```
 
 ---
 
-## Licencia
+## License
 
 [MIT](LICENSE) © David Rueda
