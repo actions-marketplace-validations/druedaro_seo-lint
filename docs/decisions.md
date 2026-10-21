@@ -1,11 +1,11 @@
-# Decisiones de diseño
+# Design Decisions
 
-Registro de decisiones técnicas relevantes tomadas durante el desarrollo. No basta con saber qué se eligió: hay que saber por qué y qué se descartó.
+A record of relevant technical decisions made during development. It's not enough to know what was chosen — the why and what was discarded matter just as much.
 
-| # | Decisión | Alternativas consideradas | Por qué esta opción | Fase |
+| # | Decision | Alternatives considered | Why this option | Phase |
 |---|---|---|---|---|
-| 1 | Monorepo con npm workspaces | repo único plano, pnpm workspaces, turborepo | npm workspaces nativo sin dependencias extra; suficiente para 3 paquetes. Turborepo añade complejidad innecesaria a esta escala. | 0 |
-| 2 | parse5 para parseo HTML | cheerio, jsdom, linkedom | parse5 es el parser que usa el estándar WHATWG; más fiel a HTML malformado real que cheerio (que envuelve htmlparser2). jsdom es demasiado pesado para un linter que no necesita DOM completo. | 0 |
-| 3 | Vitest para testing | Jest, node:test | Vitest comparte config con el tooling de Vite, soporte nativo de ESM y TypeScript sin config extra. Consistente con otros proyectos del portfolio (Trainlog, SEO Compass). | 0 |
-| 4 | Reglas como funciones puras `(doc, ctx) => Finding[]` | clases con herencia, visitor pattern sobre AST | Funciones puras son más simples de testear en aislamiento y más fáciles de entender para contribuidores. El visitor pattern añade abstracción innecesaria cuando cada regla necesita acceso libre al DOM. | 0 |
-| 5 | Zod para validación de config | ajv + JSON Schema, joi, manual | Zod tiene inferencia de tipos TypeScript nativa — la config queda tipada sin duplicar el schema. Más ligero que ajv para este caso de uso. | 0 |
+| 1 | Monorepo with npm workspaces | flat single repo, pnpm workspaces, turborepo | Native npm workspaces with no extra dependencies; sufficient for 3 packages. Turborepo adds unnecessary complexity at this scale. | 0 |
+| 2 | `parse5` for HTML parsing | cheerio, jsdom, linkedom | parse5 is the parser used by the WHATWG standard; more faithful to real-world malformed HTML than cheerio (which wraps htmlparser2). jsdom is too heavy for a linter that does not need a full DOM. | 0 |
+| 3 | Vitest for testing | Jest, node:test | Vitest shares config with Vite tooling, has native ESM and TypeScript support without extra setup. Consistent with other portfolio projects (Trainlog, SEO Compass). | 0 |
+| 4 | Rules as pure functions `(doc, ctx) => Finding[]` | class inheritance, visitor pattern over AST | Pure functions are simpler to test in isolation and easier for contributors to understand. The visitor pattern adds unnecessary abstraction when each rule needs free access to the DOM. | 0 |
+| 5 | Zod for config validation | ajv + JSON Schema, joi, manual | Zod has native TypeScript type inference — the config is typed without duplicating the schema. Lighter than ajv for this use case. | 0 |

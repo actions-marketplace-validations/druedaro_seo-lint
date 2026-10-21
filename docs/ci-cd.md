@@ -1,22 +1,20 @@
-# Guía de Integración en CI/CD
+# CI/CD Integration Guide
 
-[![npm version](https://img.shields.io/npm/v/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
+`seo-lint` is designed to be completely environment-agnostic. Because it runs directly against the already-generated static HTML (`dist/`, `build/`, `out/`), it does not need to spin up a browser or make any external network requests — completing full audits in seconds inside any CI/CD pipeline.
 
-`seo-lint` está diseñado para ser completamente agnóstico al entorno de ejecución. Al ejecutarse directamente sobre el HTML estático ya generado (`dist/`, `build/`, `out/`), no necesita levantar navegadores pesados ni realizar peticiones de red externas, completando auditorías completas en segundos dentro de cualquier pipeline de integración continua.
-
-Respeta los códigos de salida estándar de Unix:
-- **`0`**: Auditoría exitosa sin errores bloqueantes.
-- **`1`**: Se detectaron errores (`severity: error`) o la cantidad de advertencias superó el umbral configurado (`--max-warnings`).
+It respects standard Unix exit codes:
+- **`0`**: Audit passed with no blocking errors.
+- **`1`**: Errors were found (`severity: error`) or the number of warnings exceeded the configured threshold (`--max-warnings`).
 
 ---
 
 ## 1. GitHub Actions
 
-Puedes utilizar directamente la GitHub Action oficial o invocar el binario vía `npx` / `pnpm dlx`.
+You can use the official GitHub Action directly or invoke the binary via `npx` / `pnpm dlx`.
 
-### Opción A: Usando la Action oficial (Recomendado)
+### Option A: Official Action (Recommended)
 
-Genera anotaciones nativas inline en el diff del Pull Request.
+Produces native inline annotations on the Pull Request diff.
 
 ```yaml
 name: SEO & GEO Audit
@@ -47,7 +45,7 @@ jobs:
           max-warnings: 0
 ```
 
-### Opción B: Ejecución directa con npm / pnpm
+### Option B: Direct execution via npm / pnpm
 
 ```yaml
       - run: npx --yes seo-lint dist/ --reporter github
@@ -57,7 +55,7 @@ jobs:
 
 ## 2. GitLab CI/CD (`.gitlab-ci.yml`)
 
-En GitLab CI, añade una etapa `audit` o `test` después de compilar el sitio estático.
+In GitLab CI, add an `audit` or `test` stage after building the static site.
 
 ```yaml
 stages:
@@ -84,7 +82,7 @@ seo_lint:
     - npx --yes seo-lint dist/
 ```
 
-Si prefieres usar `pnpm`:
+If you prefer `pnpm`:
 
 ```yaml
 seo_lint:
@@ -103,7 +101,7 @@ seo_lint:
 
 ## 3. Bitbucket Pipelines (`bitbucket-pipelines.yml`)
 
-En Bitbucket Pipelines, define un paso que compile y ejecute la auditoría sobre la carpeta de salida.
+In Bitbucket Pipelines, define a step that builds and runs the audit against the output folder.
 
 ```yaml
 image: node:20
@@ -125,7 +123,7 @@ pipelines:
 
 ## 4. Azure DevOps Pipelines (`azure-pipelines.yml`)
 
-En Azure Pipelines, añade una tarea Node/Bash tras la compilación del artefacto.
+In Azure Pipelines, add a Node/Bash task after the artifact build step.
 
 ```yaml
 trigger:
@@ -155,7 +153,7 @@ steps:
 
 ## 5. Jenkins (`Jenkinsfile`)
 
-En pipelines declarativos de Jenkins, añade un stage dedicado:
+In declarative Jenkins pipelines, add a dedicated stage:
 
 ```groovy
 pipeline {
