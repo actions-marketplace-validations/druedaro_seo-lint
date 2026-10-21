@@ -3,6 +3,8 @@
 > Linter de SEO técnico y GEO (Generative Engine Optimization) para builds estáticos en CI/CD. Cero navegadores, sin red, ultrarrápido.
 
 [![CI](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
+[![npm downloads](https://img.shields.io/npm/dm/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---

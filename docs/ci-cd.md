@@ -1,5 +1,7 @@
 # Guía de Integración en CI/CD
 
+[![npm version](https://img.shields.io/npm/v/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
+
 `seo-lint` está diseñado para ser completamente agnóstico al entorno de ejecución. Al ejecutarse directamente sobre el HTML estático ya generado (`dist/`, `build/`, `out/`), no necesita levantar navegadores pesados ni realizar peticiones de red externas, completando auditorías completas en segundos dentro de cualquier pipeline de integración continua.
 
 Respeta los códigos de salida estándar de Unix:
