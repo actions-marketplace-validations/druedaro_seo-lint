@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
     inputs:
       version:
@@ -38,7 +38,12 @@ jobs:
           else
             RAW_VER="${GITHUB_REF#refs/tags/}"
           fi
-          CLEAN_VER="${RAW_VER#v}"
+          # Strip leading 'v' and any non-semver characters
+          CLEAN_VER=$(echo "$RAW_VER" | sed 's/^v//' | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$CLEAN_VER" ]; then
+            echo "ERROR: Could not extract valid semver from tag: $RAW_VER"
+            exit 1
+          fi
           echo "VERSION=${CLEAN_VER}" >> $GITHUB_OUTPUT
 
       - name: Build packages
@@ -46,7 +51,7 @@ jobs:
 
       - name: Set npm version
         run: |
-          npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version
+          npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version --workspaces false
 
       - name: Publish to npm
         env:
