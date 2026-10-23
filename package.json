@@ -1,9 +1,14 @@
 {
   "name": "seo-lint",
   "version": "0.1.0",
-  "description": "A powerful SEO linting tool for validating HTML, sitemaps, robots.txt, and more.",
+  "description": "A powerful SEO and GEO linting tool for validating HTML, sitemaps, robots.txt, and more.",
   "license": "MIT",
-  "private": false,
+  "type": "module",
+  "bin": {
+    "seo-lint": "./packages/cli/dist/index.js"
+  },
+  "main": "./packages/cli/dist/index.js",
+  "types": "./packages/cli/dist/index.d.ts",
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "npm run build --workspaces",
@@ -12,16 +17,29 @@
     "clean": "npm run clean --workspaces",
     "release": "npm publish --access public"
   },
+  "dependencies": {
+    "parse5": "^8.0.1",
+    "picocolors": "^1.1.1",
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "esbuild": "^0.21.5",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
   },
   "engines": {"node": ">=20.0.0"},
   "publishConfig": {"access": "public"},
-  "files": ["packages/*", "action/**", "README.md", "CHANGELOG.md", "docs/**"],
+  "files": [
+    "packages/cli/dist",
+    "packages/core/dist",
+    "action.yml",
+    "action/**",
+    "README.md",
+    "CHANGELOG.md",
+    "docs/**"
+  ],
   "repository": {"type": "git", "url": "git+https://github.com/druedaro/seo-lint.git"},
   "homepage": "https://github.com/druedaro/seo-lint#readme",
   "bugs": {"url": "https://github.com/druedaro/seo-lint/issues"}
 }
-

@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish (e.g., 1.0.0)'
+        description: 'Version to publish (e.g., 0.1.0)'
         required: true
-        default: ''
+        default: '0.1.0'
 
 jobs:
   npm-publish:
@@ -34,10 +34,15 @@ jobs:
         id: version
         run: |
           if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "::set-output name=VERSION::${{ github.event.inputs.version }}"
+            RAW_VER="${{ github.event.inputs.version }}"
           else
-            echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
+            RAW_VER="${GITHUB_REF#refs/tags/}"
           fi
+          CLEAN_VER="${RAW_VER#v}"
+          echo "VERSION=${CLEAN_VER}" >> $GITHUB_OUTPUT
+
+      - name: Build packages
+        run: npm run build
 
       - name: Set npm version
         run: |
