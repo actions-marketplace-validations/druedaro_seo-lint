@@ -19,7 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "parse5": "^7.2.1"
+    "parse5": "^8.0.1"
   },
   "devDependencies": {
     "typescript": "^5.6.0",
