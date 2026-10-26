@@ -121,4 +121,28 @@ describe("canonical-present", () => {
     expect(findings[0]?.line).toBe(3);
     expect(findings[0]?.column).toBeDefined();
   });
+
+  it("skips 404 pages", () => {
+    const html = `<html><head><title>Not Found</title></head><body>404</body></html>`;
+    const doc = parseHtml(html);
+    const findings = canonicalPresent.check(doc, {
+      filePath: "404.html",
+      html,
+      allFiles: ["404.html"],
+      isMultiLang: false,
+    });
+    expect(findings).toHaveLength(0);
+  });
+
+  it("skips pages with meta robots noindex", () => {
+    const html = `<html><head><meta name="robots" content="noindex, follow"></head><body>Private</body></html>`;
+    const doc = parseHtml(html);
+    const findings = canonicalPresent.check(doc, {
+      filePath: "private.html",
+      html,
+      allFiles: ["private.html"],
+      isMultiLang: false,
+    });
+    expect(findings).toHaveLength(0);
+  });
 });

@@ -8,9 +8,49 @@ export interface ScanOptions {
   ignore?: string[];
 }
 
+const DEFAULT_IGNORES = [
+  /^google[a-f0-9]{16}\.html$/i,
+  /^BingSiteAuth\.xml$/i,
+];
+
+export function loadIgnoreFile(dir: string): string[] {
+  const filePath = path.join(dir, ".seo-lintignore");
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    return fs
+      .readFileSync(filePath, "utf-8")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0 && !l.startsWith("#"));
+  } catch {
+    return [];
+  }
+}
+
+function matchPattern(relPath: string, pattern: string): boolean {
+  if (!pattern) return false;
+  const basename = path.basename(relPath);
+
+  if (pattern.includes("*")) {
+    const escaped = pattern
+      .replace(/[.+^${}()|[\]\\]/g, "\\$&")
+      .replace(/\*\*/g, ".*")
+      .replace(/\*/g, "[^/]*");
+    const re = new RegExp(`^${escaped}$`, "i");
+    return re.test(relPath) || re.test(basename);
+  }
+
+  return relPath === pattern || basename === pattern || relPath.includes(pattern);
+}
+
 function shouldIgnore(relPath: string, ignorePatterns: string[]): boolean {
+  const basename = path.basename(relPath);
+  if (DEFAULT_IGNORES.some((re) => re.test(basename))) {
+    return true;
+  }
+
   for (const pattern of ignorePatterns) {
-    if (pattern && relPath.includes(pattern)) {
+    if (matchPattern(relPath, pattern)) {
       return true;
     }
   }
@@ -43,8 +83,14 @@ export function scanAndLint(options: ScanOptions): LintResult {
     throw new Error(`Target directory does not exist: "${distDir}" (resolved: ${absDist})`);
   }
 
+  const fileIgnores = [
+    ...loadIgnoreFile(process.cwd()),
+    ...(absDist !== path.resolve(process.cwd()) ? loadIgnoreFile(absDist) : []),
+  ];
+  const mergedIgnore = Array.from(new Set([...ignore, ...fileIgnores]));
+
   const allCollected = collectAllFiles(absDist);
-  const allFiles = allCollected.filter((f) => !shouldIgnore(f, ignore));
+  const allFiles = allCollected.filter((f) => !shouldIgnore(f, mergedIgnore));
 
   const htmlRelPaths = allFiles.filter((f) => f.endsWith(".html") || f.endsWith(".htm"));
 

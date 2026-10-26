@@ -12,6 +12,23 @@ export const canonicalPresent: Rule = {
 
   check(doc: Document, ctx: RuleContext): Finding[] {
     const findings: Finding[] = [];
+
+    // Skip 404 error pages and pages marked with noindex
+    const is404Page = ctx.filePath === "404.html" || /(^|\/)404(\/index)?\.html$/i.test(ctx.filePath);
+    if (is404Page) {
+      return findings;
+    }
+
+    const metas = querySelectorAll(doc, "meta");
+    const isNoIndex = metas.some((el) => {
+      const name = (getAttribute(el, "name") ?? "").toLowerCase();
+      const content = (getAttribute(el, "content") ?? "").toLowerCase();
+      return (name === "robots" || name === "googlebot") && (content.includes("noindex") || content.includes("none"));
+    });
+    if (isNoIndex) {
+      return findings;
+    }
+
     const links = querySelectorAll(doc, "link");
 
     const canonicalLinks = links.filter((el) => {

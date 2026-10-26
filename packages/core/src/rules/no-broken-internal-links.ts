@@ -32,17 +32,31 @@ export const noBrokenInternalLinks: Rule = {
       if (!cleanHref) continue;
 
       const baseDir = path.dirname(ctx.filePath);
-      const resolvedPath = path.normalize(
+      const normalizedPath = path.normalize(
         path.isAbsolute(cleanHref) ? cleanHref.slice(1) : path.join(baseDir, cleanHref)
       );
 
-      if (!ctx.allFiles.includes(resolvedPath)) {
+      // Candidate resolutions for static site generators:
+      // 1. Literal file: e.g. "about.html" or "assets/cv.pdf"
+      // 2. Directory index: e.g. "/" -> "index.html", "/en/" -> "en/index.html"
+      // 3. Clean URL without extension: e.g. "/about" -> "about.html"
+      const candidates = [
+        normalizedPath,
+        path.join(normalizedPath, "index.html"),
+        normalizedPath.endsWith(".html") || normalizedPath.endsWith(".htm")
+          ? normalizedPath
+          : normalizedPath + ".html",
+      ];
+
+      const exists = candidates.some((cand) => ctx.allFiles.includes(cand));
+
+      if (!exists) {
         const loc = getLocation(el);
         findings.push({
           ruleId: "no-broken-internal-links",
           severity: noBrokenInternalLinks.meta.severity,
           category: noBrokenInternalLinks.meta.category,
-          message: `Internal link "${href}" points to a non‑existent file "${resolvedPath}".`,
+          message: `Internal link "${href}" points to a non‑existent file "${normalizedPath}".`,
           filePath: ctx.filePath,
           ...loc,
         });
