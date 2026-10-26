@@ -35,6 +35,7 @@ Arguments:
 
 Options:
   -c, --config <path>    Path to custom configuration file
+  -i, --ignore <pattern> Comma-separated glob patterns to ignore (e.g. "404.html,assets/*")
   -r, --reporter <type>  Output reporter: "text", "json", "github" (default: "text")
   --max-warnings <num>   Exit with code 1 if warning count exceeds this number
   -v, --version          Show version number
@@ -52,6 +53,7 @@ async function run(): Promise<void> {
     allowPositionals: true,
     options: {
       config: { type: "string", short: "c" },
+      ignore: { type: "string", short: "i" },
       reporter: { type: "string", short: "r", default: "text" },
       "max-warnings": { type: "string" },
       version: { type: "boolean", short: "v" },
@@ -73,7 +75,10 @@ async function run(): Promise<void> {
   const config = await loadConfig(cwd, values.config);
 
   const targetDir = positionals[0] ?? config.dist ?? "dist";
-  const ignorePatterns = config.ignore ?? [];
+  const cliIgnores = values.ignore
+    ? values.ignore.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+  const ignorePatterns = [...(config.ignore ?? []), ...cliIgnores];
 
   const result = scanAndLint({
     distDir: targetDir,

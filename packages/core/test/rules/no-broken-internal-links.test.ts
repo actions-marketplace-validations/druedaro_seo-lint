@@ -59,4 +59,35 @@ describe("no-broken-internal-links", () => {
     const findings = noBrokenInternalLinks.check(doc, ctx);
     expect(findings).toHaveLength(0);
   });
+
+  it("resolves root link / to index.html", () => {
+    const ctx = makeCtx("en/index.html", ["index.html", "en/index.html"]);
+    const doc = parseHtml(htmlWithLink("/"));
+    const findings = noBrokenInternalLinks.check(doc, ctx);
+    expect(findings).toHaveLength(0);
+  });
+
+  it("resolves directory links /en/ and /ca/ to dir/index.html", () => {
+    const ctx = makeCtx("index.html", ["index.html", "en/index.html", "ca/index.html"]);
+    const doc = parseHtml(`
+      <html><body>
+        <a href="/en/">English</a>
+        <a href="/ca/">Catalan</a>
+      </body></html>
+    `);
+    const findings = noBrokenInternalLinks.check(doc, ctx);
+    expect(findings).toHaveLength(0);
+  });
+
+  it("resolves clean URL /about to about.html or about/index.html", () => {
+    const ctx = makeCtx("index.html", ["index.html", "about.html", "team/index.html"]);
+    const doc = parseHtml(`
+      <html><body>
+        <a href="/about">About</a>
+        <a href="/team">Team</a>
+      </body></html>
+    `);
+    const findings = noBrokenInternalLinks.check(doc, ctx);
+    expect(findings).toHaveLength(0);
+  });
 });

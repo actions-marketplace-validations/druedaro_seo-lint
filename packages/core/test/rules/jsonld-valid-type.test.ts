@@ -185,4 +185,28 @@ describe("jsonld-valid-type", () => {
     expect(findings[0]?.line).toBe(3);
     expect(findings[0]?.column).toBeDefined();
   });
+
+  it("passes with EducationalOccupationalCredential and Language types", () => {
+    const html = `<html>
+<head>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Degree in Computer Science"
+      },
+      {
+        "@type": "Language",
+        "name": "Spanish"
+      }
+    ]
+  }
+  </script>
+</head>
+<body></body>
+</html>`;
+    expect(run(html)).toEqual([]);
+  });
 });

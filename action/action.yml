@@ -16,6 +16,9 @@ inputs:
   max-warnings:
     description: 'Maximum number of warnings before exiting with code 1'
     required: false
+  ignore:
+    description: 'Comma-separated glob patterns or files to ignore'
+    required: false
 
 runs:
   using: 'composite'
@@ -26,6 +29,9 @@ runs:
         ARGS="${{ inputs.dir }} --reporter github"
         if [ -n "${{ inputs.config }}" ]; then
           ARGS="$ARGS --config ${{ inputs.config }}"
+        fi
+        if [ -n "${{ inputs.ignore }}" ]; then
+          ARGS="$ARGS --ignore ${{ inputs.ignore }}"
         fi
         if [ -n "${{ inputs.max-warnings }}" ]; then
           ARGS="$ARGS --max-warnings ${{ inputs.max-warnings }}"
