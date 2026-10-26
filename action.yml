@@ -36,5 +36,5 @@ runs:
         elif [ -f "./node_modules/.bin/seo-lint" ]; then
           ./node_modules/.bin/seo-lint $ARGS
         else
-          npx --yes seo-lint@latest $ARGS
+          npx --yes @druedaro/seo-lint@latest $ARGS
         fi
