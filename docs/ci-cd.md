@@ -48,7 +48,47 @@ jobs:
 ### Option B: Direct execution via npm / pnpm
 
 ```yaml
-      - run: npx --yes seo-lint dist/ --reporter github
+      - run: npx --yes @druedaro/seo-lint dist/ --reporter github
+```
+
+### Option C: Monorepos or Subdirectories (e.g. `frontend/`)
+
+If your frontend or documentation is contained within a subfolder, configure `cache-dependency-path`, `working-directory`, and the target build directory:
+
+```yaml
+name: SEO Audit (Subdirectory / Monorepo)
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install & Build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Run SEO Lint
+        uses: druedaro/seo-lint@main
+        with:
+          dir: 'frontend/dist'
+          ignore: 'assets/*'
+          max-warnings: 0
 ```
 
 ---

@@ -155,6 +155,31 @@ Add this step to your workflow (e.g. `.github/workflows/seo-audit.yml`):
     max-warnings: 0             # Optional: fail build if warnings exceed this number
 ```
 
+#### Monorepos or Subdirectories (e.g. `frontend/`)
+
+If your site lives inside a subfolder, configure `cache-dependency-path`, `working-directory`, and the target `dir`:
+
+```yaml
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: 22
+    cache: 'npm'
+    cache-dependency-path: frontend/package-lock.json
+
+- name: Build
+  working-directory: frontend
+  run: |
+    npm ci
+    npm run build
+
+- name: Run SEO Lint
+  uses: druedaro/seo-lint@main
+  with:
+    dir: 'frontend/dist'
+    ignore: 'assets/*'
+```
+
 For copy-paste-ready examples for **GitLab CI/CD**, **Bitbucket Pipelines**, **Azure DevOps**, and **Jenkins**, see the [full CI/CD guide](docs/ci-cd.md).
 
 ---
