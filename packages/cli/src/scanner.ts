@@ -89,10 +89,10 @@ export function scanAndLint(options: ScanOptions): LintResult {
   ];
   const mergedIgnore = Array.from(new Set([...ignore, ...fileIgnores]));
 
-  const allCollected = collectAllFiles(absDist);
-  const allFiles = allCollected.filter((f) => !shouldIgnore(f, mergedIgnore));
-
-  const htmlRelPaths = allFiles.filter((f) => f.endsWith(".html") || f.endsWith(".htm"));
+  const allFiles = collectAllFiles(absDist);
+  const htmlRelPaths = allFiles
+    .filter((f) => f.endsWith(".html") || f.endsWith(".htm"))
+    .filter((f) => !shouldIgnore(f, mergedIgnore));
 
   const htmlFiles: Array<{ filePath: string; html: string }> = [];
   let isMultiLang = false;

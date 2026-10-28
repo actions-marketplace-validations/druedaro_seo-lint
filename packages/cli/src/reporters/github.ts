@@ -9,7 +9,7 @@ export function formatGithubReport(result: LintResult): string {
     if (f.line !== undefined) parts.push(`line=${f.line}`);
     if (f.column !== undefined) parts.push(`col=${f.column}`);
 
-    lines.push(`::${level} ${parts.join(",")}::[${f.ruleId}] ${f.message}`);
+    lines.push(`::${level} ${parts.join(",")}::${f.filePath}: [${f.ruleId}] ${f.message}`);
   }
 
   const errorCount = result.findings.filter((f) => f.severity === "error").length;

@@ -66,8 +66,12 @@ describe("cli reporters", () => {
   describe("github reporter", () => {
     it("formats github workflow commands for annotations", () => {
       const output = formatGithubReport(SAMPLE_RESULT);
-      expect(output).toContain("::error file=dist/index.html,line=1,col=1::[title-present] Missing title tag");
-      expect(output).toContain("::warning file=dist/about.html::[description-present] Description is too short");
+      expect(output).toContain(
+        "::error file=dist/index.html,line=1,col=1::dist/index.html: [title-present] Missing title tag"
+      );
+      expect(output).toContain(
+        "::warning file=dist/about.html::dist/about.html: [description-present] Description is too short"
+      );
       expect(output).toContain("seo-lint: Found 1 error(s) and 1 warning(s) across 2 files.");
     });
 

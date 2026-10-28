@@ -50,21 +50,21 @@ No prior installation needed. Run it directly with your package manager of choic
 
 ```bash
 # With npx
-npx seo-lint dist/
+npx @druedaro/seo-lint dist/
 
 # With pnpm
-pnpm dlx seo-lint dist/
+pnpm dlx @druedaro/seo-lint dist/
 
 # With yarn
-yarn dlx seo-lint dist/
+yarn dlx @druedaro/seo-lint dist/
 ```
 
 Or install it as a dev dependency:
 
 ```bash
-npm install -D seo-lint
+npm install -D @druedaro/seo-lint
 # or with pnpm
-pnpm add -D seo-lint
+pnpm add -D @druedaro/seo-lint
 ```
 
 Then add it to your `package.json` scripts:
@@ -144,11 +144,40 @@ Customise rules, ignore paths, or adjust severities by creating a `seo-lint.conf
 
 ### GitHub Actions
 
+Add this step to your workflow (e.g. `.github/workflows/seo-audit.yml`):
+
 ```yaml
-- uses: druedaro/seo-lint@v1
+- name: Run SEO Lint
+  uses: druedaro/seo-lint@main
   with:
     dir: 'dist'
-    max-warnings: 0
+    ignore: 'assets/*,404.html' # Optional: comma-separated ignore patterns
+    max-warnings: 0             # Optional: fail build if warnings exceed this number
+```
+
+#### Monorepos or Subdirectories (e.g. `frontend/`)
+
+If your site lives inside a subfolder, configure `cache-dependency-path`, `working-directory`, and the target `dir`:
+
+```yaml
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: 22
+    cache: 'npm'
+    cache-dependency-path: frontend/package-lock.json
+
+- name: Build
+  working-directory: frontend
+  run: |
+    npm ci
+    npm run build
+
+- name: Run SEO Lint
+  uses: druedaro/seo-lint@main
+  with:
+    dir: 'frontend/dist'
+    ignore: 'assets/*'
 ```
 
 For copy-paste-ready examples for **GitLab CI/CD**, **Bitbucket Pipelines**, **Azure DevOps**, and **Jenkins**, see the [full CI/CD guide](docs/ci-cd.md).
@@ -165,6 +194,7 @@ Arguments:
 
 Options:
   -c, --config <path>    Path to a custom configuration file
+  -i, --ignore <pattern> Comma-separated glob patterns to ignore (e.g. "404.html,assets/*")
   -r, --reporter <type>  Output format: "text", "json", "github" (default: "text")
   --max-warnings <num>   Exit code 1 if warnings exceed this number
   -v, --version          Show installed version
