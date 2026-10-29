@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.4] - 2026-10-29
 
 ### Added
+- Auto-detection of framework adapter subdirectories: automatically detects static document roots in `dist/client/` (Astro with `@astrojs/vercel`, Cloudflare, Node adapters) and `.output/public/` (Nuxt 3), eliminating false positive broken internal links in hybrid/SSR deployments.
 - GitHub Action `working-directory` input support to easily handle projects inside subdirectories (e.g. `frontend/`).
 - Shared component tips in `text` and `github` reporters: automatically identifies when broken internal links recur across 3 or more pages (likely originating in shared Header/Footer layout components).
 - Warning alerts when 0 HTML files are found in the target audit directory, preventing silent false-pass builds in CI.
