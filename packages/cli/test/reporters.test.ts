@@ -12,6 +12,40 @@ const EMPTY_RESULT: LintResult = {
   hasErrors: false,
 };
 
+const ZERO_FILES_RESULT: LintResult = {
+  findings: [],
+  filesAnalysed: 0,
+  hasErrors: false,
+};
+
+const SHARED_BROKEN_LINKS_RESULT: LintResult = {
+  findings: [
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page1.html",
+    },
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page2.html",
+    },
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page3.html",
+    },
+  ],
+  filesAnalysed: 3,
+  hasErrors: true,
+};
+
 const SAMPLE_RESULT: LintResult = {
   findings: [
     {
@@ -42,6 +76,11 @@ describe("cli reporters", () => {
       expect(output).toContain("No SEO or GEO problems found across 3 files.");
     });
 
+    it("warns when 0 HTML files are analysed", () => {
+      const output = formatTextReport(ZERO_FILES_RESULT);
+      expect(output).toContain("No HTML files found to audit. Did you build the project first?");
+    });
+
     it("formats findings grouped by file with totals", () => {
       const output = formatTextReport(SAMPLE_RESULT);
       expect(output).toContain("dist/index.html");
@@ -50,6 +89,13 @@ describe("cli reporters", () => {
       expect(output).toContain("dist/about.html");
       expect(output).toContain("Description is too short");
       expect(output).toContain("2 problems (1 error, 1 warning)");
+    });
+
+    it("includes shared component tip when broken link appears across multiple pages", () => {
+      const output = formatTextReport(SHARED_BROKEN_LINKS_RESULT);
+      expect(output).toContain(
+        'Broken link "/LICENSE" is repeated across 3 pages (likely in a shared Footer or Header component).'
+      );
     });
   });
 
@@ -78,6 +124,18 @@ describe("cli reporters", () => {
     it("formats clean result for github", () => {
       const output = formatGithubReport(EMPTY_RESULT);
       expect(output).toContain("seo-lint: No SEO/GEO problems found across 3 files.");
+    });
+
+    it("outputs warning annotation when 0 HTML files are analysed", () => {
+      const output = formatGithubReport(ZERO_FILES_RESULT);
+      expect(output).toContain("::warning::seo-lint: No HTML files found to audit.");
+    });
+
+    it("includes notice annotation tip when broken link appears across multiple pages", () => {
+      const output = formatGithubReport(SHARED_BROKEN_LINKS_RESULT);
+      expect(output).toContain(
+        '::notice::seo-lint tip: Broken link "/LICENSE" is repeated across 3 pages'
+      );
     });
   });
 });

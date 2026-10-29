@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2026-10-29
+
+### Added
+- GitHub Action `working-directory` input support to easily handle projects inside subdirectories (e.g. `frontend/`).
+- Shared component tips in `text` and `github` reporters: automatically identifies when broken internal links recur across 3 or more pages (likely originating in shared Header/Footer layout components).
+- Warning alerts when 0 HTML files are found in the target audit directory, preventing silent false-pass builds in CI.
+
 ## [0.1.3] - 2026-10-29
 
 ### Fixed
