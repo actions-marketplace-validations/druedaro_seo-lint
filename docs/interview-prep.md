@@ -43,7 +43,10 @@ Documento vivo. Se actualiza en cada fase del proyecto, no al final. La idea es 
    - *Solución:* Excluir explícitamente páginas 404 y aquellas con `<meta name="robots" content="noindex">` de las reglas `canonical-present` y `og-tags-complete`.
 5. **Configuración de CI en monorepos y subcarpetas (`frontend/`):**
    - *Problema:* En proyectos con frontend anidado, `actions/setup-node` falla si no encuentra el lockfile en la raíz (`Dependencies lock file is not found`), y los comandos de build deben correr en el subdirectorio correspondiente.
-   - *Solución:* Documentar la receta oficial con `cache-dependency-path: frontend/package-lock.json`, `working-directory: frontend`, y `dir: 'frontend/dist'`.
+   - *Solución:* Documentar la receta oficial con `cache-dependency-path: frontend/package-lock.json`, `working-directory: frontend`, y añadir soporte nativo para el input `working-directory` en la propia GitHub Action.
+6. **Falsos positivos en enlaces internos con adaptadores SSR/Vercel (Astro + `@astrojs/vercel`):**
+   - *Problema:* Al auditar `forma-atelier`, los enlaces internos (`/`, `/collections`) generaron falsos positivos de `no-broken-internal-links`. Con adaptadores serverless/híbridos, Astro compila los archivos estáticos en `dist/client/` y las funciones en `dist/server/`. Al configurar `dir: 'dist'`, el linter buscaba `collections/index.html` en la raíz de `dist/` en vez de en `client/`.
+   - *Solución:* Implementar auto-detección inteligente en el scanner. Si `dist/index.html` no existe en la raíz pero sí en `dist/client/` (Astro con Vercel/Cloudflare/Node) o `.output/public/` (Nuxt), el linter reasigna automáticamente el root del documento a la subcarpeta cliente, eliminando el 100% de los falsos positivos de forma transparente.
 
 ## Preguntas que probablemente te hagan, y tu respuesta
 
