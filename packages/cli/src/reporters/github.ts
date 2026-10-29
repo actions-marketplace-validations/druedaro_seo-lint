@@ -36,8 +36,8 @@ export function formatGithubReport(result: LintResult): string {
   for (const f of result.findings) {
     if (f.ruleId === "no-broken-internal-links") {
       const match = f.message.match(/Internal link "([^"]+)"/);
-      if (match && match[1]) {
-        const href = match[1];
+      const href = match?.[1];
+      if (href) {
         const files = brokenLinksByHref.get(href) ?? new Set<string>();
         files.add(f.filePath);
         brokenLinksByHref.set(href, files);
