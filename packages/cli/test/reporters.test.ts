@@ -18,6 +18,34 @@ const ZERO_FILES_RESULT: LintResult = {
   hasErrors: false,
 };
 
+const SHARED_BROKEN_LINKS_RESULT: LintResult = {
+  findings: [
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page1.html",
+    },
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page2.html",
+    },
+    {
+      ruleId: "no-broken-internal-links",
+      severity: "error",
+      category: "links",
+      message: 'Internal link "/LICENSE" points to a non‑existent file "LICENSE".',
+      filePath: "dist/page3.html",
+    },
+  ],
+  filesAnalysed: 3,
+  hasErrors: true,
+};
+
 const SAMPLE_RESULT: LintResult = {
   findings: [
     {
@@ -62,6 +90,13 @@ describe("cli reporters", () => {
       expect(output).toContain("Description is too short");
       expect(output).toContain("2 problems (1 error, 1 warning)");
     });
+
+    it("includes shared component tip when broken link appears across multiple pages", () => {
+      const output = formatTextReport(SHARED_BROKEN_LINKS_RESULT);
+      expect(output).toContain(
+        'Broken link "/LICENSE" is repeated across 3 pages (likely in a shared Footer or Header component).'
+      );
+    });
   });
 
   describe("json reporter", () => {
@@ -94,6 +129,13 @@ describe("cli reporters", () => {
     it("outputs warning annotation when 0 HTML files are analysed", () => {
       const output = formatGithubReport(ZERO_FILES_RESULT);
       expect(output).toContain("::warning::seo-lint: No HTML files found to audit.");
+    });
+
+    it("includes notice annotation tip when broken link appears across multiple pages", () => {
+      const output = formatGithubReport(SHARED_BROKEN_LINKS_RESULT);
+      expect(output).toContain(
+        '::notice::seo-lint tip: Broken link "/LICENSE" is repeated across 3 pages'
+      );
     });
   });
 });

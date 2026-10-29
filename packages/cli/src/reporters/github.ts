@@ -31,5 +31,27 @@ export function formatGithubReport(result: LintResult): string {
     );
   }
 
+  // Shared component tip for recurrent broken links
+  const brokenLinksByHref = new Map<string, Set<string>>();
+  for (const f of result.findings) {
+    if (f.ruleId === "no-broken-internal-links") {
+      const match = f.message.match(/Internal link "([^"]+)"/);
+      if (match && match[1]) {
+        const href = match[1];
+        const files = brokenLinksByHref.get(href) ?? new Set<string>();
+        files.add(f.filePath);
+        brokenLinksByHref.set(href, files);
+      }
+    }
+  }
+
+  for (const [href, files] of brokenLinksByHref) {
+    if (files.size >= 3) {
+      lines.push(
+        `::notice::seo-lint tip: Broken link "${href}" is repeated across ${files.size} pages (likely in a shared Footer or Header component).`
+      );
+    }
+  }
+
   return lines.join("\n") + "\n";
 }
