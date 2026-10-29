@@ -1,6 +1,6 @@
 {
   "name": "@seo-lint/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "SEO linting engine — rule runner and HTML parser for static site auditing",
   "type": "module",
   "main": "./dist/index.js",

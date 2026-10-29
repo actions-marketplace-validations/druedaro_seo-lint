@@ -1,6 +1,6 @@
 {
   "name": "@druedaro/seo-lint",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A powerful SEO and GEO linting tool for validating HTML, sitemaps, robots.txt, and more.",
   "license": "MIT",
   "type": "module",

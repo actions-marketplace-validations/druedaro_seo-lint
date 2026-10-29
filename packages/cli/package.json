@@ -1,6 +1,6 @@
 {
   "name": "@druedaro/seo-lint",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI tool for technical SEO and GEO linting of static HTML builds",
   "type": "module",
   "bin": {

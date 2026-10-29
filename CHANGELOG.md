@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-10-29
+
+### Fixed
+- Include file path in GitHub reporter annotation messages (`dist/...: [rule] msg`) so that file locations remain clearly visible in plain-text CI logs and terminal summaries.
+
+### Documentation
+- Added GitHub Actions CI/CD configuration recipes for monorepos and subdirectory projects (e.g., `frontend/`) with `cache-dependency-path` and `working-directory`.
+- Completed interview preparation guide (`docs/interview-prep.md`) with design decisions, metrics, and real-world validation data.
+
+## [0.1.2] - 2026-10-26
+
+### Fixed
+- Preserved asset files in `allFiles` when `--ignore` patterns are applied, avoiding false positives in link and asset resolution.
+- Skipped 404 error pages and pages marked with `noindex` in `canonical-present` and `og-tags-complete` rules.
+
+## [0.1.1] - 2026-10-26
+
+### Added
+- Directory index resolution for internal links (e.g. `/about/` resolves to `/about/index.html` or `/about.html`).
+- Expanded Schema.org vocabulary support in `jsonld-valid-type` to include full schema hierarchy and `@graph` elements.
+- Path and glob ignore filtering support via `--ignore` CLI option and config file.
+
 ## [0.1.0] - 2026-10-20
 
 ### Added
