@@ -16,9 +16,15 @@ export function formatGithubReport(result: LintResult): string {
   const warningCount = result.findings.filter((f) => f.severity === "warning").length;
 
   if (result.findings.length === 0) {
-    lines.push(
-      `seo-lint: No SEO/GEO problems found across ${result.filesAnalysed} files.`
-    );
+    if (result.filesAnalysed === 0) {
+      lines.push(
+        "::warning::seo-lint: No HTML files found to audit. Did you build the project first? Check your target directory."
+      );
+    } else {
+      lines.push(
+        `seo-lint: No SEO/GEO problems found across ${result.filesAnalysed} files.`
+      );
+    }
   } else {
     lines.push(
       `seo-lint: Found ${errorCount} error(s) and ${warningCount} warning(s) across ${result.filesAnalysed} files.`

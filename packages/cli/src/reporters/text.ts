@@ -3,6 +3,12 @@ import type { Finding, LintResult } from "@seo-lint/core";
 
 export function formatTextReport(result: LintResult): string {
   if (result.findings.length === 0) {
+    if (result.filesAnalysed === 0) {
+      return (
+        pc.yellow("⚠") +
+        " No HTML files found to audit. Did you build the project first? Check your target directory.\n"
+      );
+    }
     return (
       pc.green("✔") +
       ` No SEO or GEO problems found across ${result.filesAnalysed} file${
