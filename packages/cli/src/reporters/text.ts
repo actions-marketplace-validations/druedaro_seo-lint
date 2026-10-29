@@ -11,8 +11,7 @@ export function formatTextReport(result: LintResult): string {
     }
     return (
       pc.green("✔") +
-      ` No SEO or GEO problems found across ${result.filesAnalysed} file${
-        result.filesAnalysed === 1 ? "" : "s"
+      ` No SEO or GEO problems found across ${result.filesAnalysed} file${result.filesAnalysed === 1 ? "" : "s"
       }.\n`
     );
   }
@@ -49,11 +48,10 @@ export function formatTextReport(result: LintResult): string {
   const total = errorCount + warningCount;
 
   const summaryIcon = errorCount > 0 ? pc.red("✖") : pc.yellow("⚠");
-  const summaryText = `${summaryIcon} ${total} problem${total === 1 ? "" : "s"} (${errorCount} error${
-    errorCount === 1 ? "" : "s"
-  }, ${warningCount} warning${warningCount === 1 ? "" : "s"}) across ${
-    result.filesAnalysed
-  } file${result.filesAnalysed === 1 ? "" : "s"}.`;
+  const summaryText = `${summaryIcon} ${total} problem${total === 1 ? "" : "s"} (${errorCount} error${errorCount === 1 ? "" : "s"
+    }, ${warningCount} warning${warningCount === 1 ? "" : "s"}) across ${result.filesAnalysed
+    } file${result.filesAnalysed === 1 ? "" : "s"}.`;
+
 
   output.push(summaryText);
 
@@ -62,8 +60,8 @@ export function formatTextReport(result: LintResult): string {
   for (const f of result.findings) {
     if (f.ruleId === "no-broken-internal-links") {
       const match = f.message.match(/Internal link "([^"]+)"/);
-      if (match && match[1]) {
-        const href = match[1];
+      const href = match?.[1];
+      if (href) {
         const files = brokenLinksByHref.get(href) ?? new Set<string>();
         files.add(f.filePath);
         brokenLinksByHref.set(href, files);
@@ -75,7 +73,7 @@ export function formatTextReport(result: LintResult): string {
     if (files.size >= 3) {
       output.push(
         pc.cyan("ℹ Tip: ") +
-          `Broken link "${href}" is repeated across ${files.size} pages (likely in a shared Footer or Header component).`
+        `Broken link "${href}" is repeated across ${files.size} pages (likely in a shared Footer or Header component).`
       );
     }
   }
