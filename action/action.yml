@@ -19,6 +19,9 @@ inputs:
   ignore:
     description: 'Comma-separated glob patterns or files to ignore'
     required: false
+  working-directory:
+    description: 'Working directory if the static site is located in a subdirectory (e.g. frontend)'
+    required: false
 
 runs:
   using: 'composite'
@@ -26,6 +29,10 @@ runs:
     - name: Run seo-lint
       shell: bash
       run: |
+        if [ -n "${{ inputs.working-directory }}" ]; then
+          cd "${{ inputs.working-directory }}"
+        fi
+
         ARGS="${{ inputs.dir }} --reporter github"
         if [ -n "${{ inputs.config }}" ]; then
           ARGS="$ARGS --config ${{ inputs.config }}"

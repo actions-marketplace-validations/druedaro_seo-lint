@@ -176,7 +176,8 @@ If your site lives inside a subfolder, configure `cache-dependency-path`, `worki
 - name: Run SEO Lint
   uses: druedaro/seo-lint@main
   with:
-    dir: 'frontend/dist'
+    working-directory: 'frontend'
+    dir: 'dist'
     ignore: 'assets/*'
 ```
 
