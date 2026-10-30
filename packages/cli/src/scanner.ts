@@ -76,11 +76,37 @@ function collectAllFiles(dir: string, baseDir: string = dir): string[] {
 }
 
 export function scanAndLint(options: ScanOptions): LintResult {
-  const { distDir, config, ignore = [] } = options;
-  const absDist = path.resolve(distDir);
+  let { distDir, config, ignore = [] } = options;
+  let absDist = path.resolve(distDir);
 
   if (!fs.existsSync(absDist)) {
     throw new Error(`Target directory does not exist: "${distDir}" (resolved: ${absDist})`);
+  }
+
+  // Auto-detect framework adapter subdirectories:
+  // e.g. Astro with @astrojs/vercel, Cloudflare, Node places static output in dist/client/
+  // Nuxt 3 places static output in .output/public/
+  if (!fs.existsSync(path.join(absDist, "index.html"))) {
+    const clientSubdir = path.join(absDist, "client");
+    const publicSubdir = path.join(absDist, "public");
+
+    if (
+      fs.existsSync(clientSubdir) &&
+      fs.statSync(clientSubdir).isDirectory() &&
+      (fs.existsSync(path.join(clientSubdir, "index.html")) ||
+        fs.readdirSync(clientSubdir).some((f) => f.endsWith(".html") || f.endsWith(".htm")))
+    ) {
+      absDist = clientSubdir;
+      distDir = path.join(distDir, "client");
+    } else if (
+      fs.existsSync(publicSubdir) &&
+      fs.statSync(publicSubdir).isDirectory() &&
+      (fs.existsSync(path.join(publicSubdir, "index.html")) ||
+        fs.readdirSync(publicSubdir).some((f) => f.endsWith(".html") || f.endsWith(".htm")))
+    ) {
+      absDist = publicSubdir;
+      distDir = path.join(distDir, "public");
+    }
   }
 
   const fileIgnores = [
@@ -89,10 +115,10 @@ export function scanAndLint(options: ScanOptions): LintResult {
   ];
   const mergedIgnore = Array.from(new Set([...ignore, ...fileIgnores]));
 
-  const allCollected = collectAllFiles(absDist);
-  const allFiles = allCollected.filter((f) => !shouldIgnore(f, mergedIgnore));
-
-  const htmlRelPaths = allFiles.filter((f) => f.endsWith(".html") || f.endsWith(".htm"));
+  const allFiles = collectAllFiles(absDist);
+  const htmlRelPaths = allFiles
+    .filter((f) => f.endsWith(".html") || f.endsWith(".htm"))
+    .filter((f) => !shouldIgnore(f, mergedIgnore));
 
   const htmlFiles: Array<{ filePath: string; html: string }> = [];
   let isMultiLang = false;

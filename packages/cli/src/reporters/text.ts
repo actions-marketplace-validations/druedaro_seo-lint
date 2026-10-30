@@ -3,10 +3,15 @@ import type { Finding, LintResult } from "@seo-lint/core";
 
 export function formatTextReport(result: LintResult): string {
   if (result.findings.length === 0) {
+    if (result.filesAnalysed === 0) {
+      return (
+        pc.yellow("⚠") +
+        " No HTML files found to audit. Did you build the project first? Check your target directory.\n"
+      );
+    }
     return (
       pc.green("✔") +
-      ` No SEO or GEO problems found across ${result.filesAnalysed} file${
-        result.filesAnalysed === 1 ? "" : "s"
+      ` No SEO or GEO problems found across ${result.filesAnalysed} file${result.filesAnalysed === 1 ? "" : "s"
       }.\n`
     );
   }
@@ -43,12 +48,35 @@ export function formatTextReport(result: LintResult): string {
   const total = errorCount + warningCount;
 
   const summaryIcon = errorCount > 0 ? pc.red("✖") : pc.yellow("⚠");
-  const summaryText = `${summaryIcon} ${total} problem${total === 1 ? "" : "s"} (${errorCount} error${
-    errorCount === 1 ? "" : "s"
-  }, ${warningCount} warning${warningCount === 1 ? "" : "s"}) across ${
-    result.filesAnalysed
-  } file${result.filesAnalysed === 1 ? "" : "s"}.`;
+  const summaryText = `${summaryIcon} ${total} problem${total === 1 ? "" : "s"} (${errorCount} error${errorCount === 1 ? "" : "s"
+    }, ${warningCount} warning${warningCount === 1 ? "" : "s"}) across ${result.filesAnalysed
+    } file${result.filesAnalysed === 1 ? "" : "s"}.`;
+
 
   output.push(summaryText);
+
+  // Shared component tip for recurrent broken links (common in SSG layouts like Footer or Nav)
+  const brokenLinksByHref = new Map<string, Set<string>>();
+  for (const f of result.findings) {
+    if (f.ruleId === "no-broken-internal-links") {
+      const match = f.message.match(/Internal link "([^"]+)"/);
+      const href = match?.[1];
+      if (href) {
+        const files = brokenLinksByHref.get(href) ?? new Set<string>();
+        files.add(f.filePath);
+        brokenLinksByHref.set(href, files);
+      }
+    }
+  }
+
+  for (const [href, files] of brokenLinksByHref) {
+    if (files.size >= 3) {
+      output.push(
+        pc.cyan("ℹ Tip: ") +
+        `Broken link "${href}" is repeated across ${files.size} pages (likely in a shared Footer or Header component).`
+      );
+    }
+  }
+
   return output.join("\n") + "\n";
 }
