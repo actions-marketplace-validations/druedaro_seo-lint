@@ -20,6 +20,7 @@ import { noRedirectChains } from "./no-redirect-chains.js";
 import { llmsTxtPresent } from "./llms-txt-present.js";
 import { aiCrawlerAccess } from "./ai-crawler-access.js";
 import { extractableContent } from "./extractable-content.js";
+import { linkHasAccessibleName } from "./link-has-accessible-name.js";
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
@@ -36,6 +37,7 @@ export const builtinRules: Rule[] = [
   jsonldValidType,
   jsonldRequiredFields,
   noBrokenInternalLinks,
+  linkHasAccessibleName,
   sitemapValidUrls,
   sitemapRobotsConsistency,
   noRedirectChains,
