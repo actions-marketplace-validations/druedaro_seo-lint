@@ -80,17 +80,19 @@ Then add it to your `package.json` scripts:
 
 ---
 
-## Rule Catalogue (21 rules in v1)
+## Rule Catalogue (24 rules)
 
 ### Meta
 - `title-present`: `<title>` present and within the recommended length (10–60 chars).
 - `description-present`: `<meta name="description">` present and within adequate length (50–160 chars).
 - `canonical-present`: `<link rel="canonical">` present, absolute, and valid.
+- `meta-viewport-accessible`: `<meta name="viewport">` present and allows user zooming without restriction (WCAG 1.4.4).
 - `og-tags-complete`: `og:title`, `og:description`, and `og:image` present and populated.
 
 ### Structure
 - `single-h1`: Exactly one `<h1>` per page.
 - `heading-order`: Coherent heading hierarchy with no level skips (e.g. `h2` → `h4`).
+- `landmark-main-present`: Exactly one visible `<main>` landmark (or element with `role="main"`) to demarcate primary content.
 - `img-alt-present`: Every content image has an `alt` attribute (decorative images with `alt=""` are excluded).
 - `lang-attribute`: `lang` attribute present on `<html>` with a valid BCP 47 code.
 
@@ -107,6 +109,7 @@ Then add it to your `package.json` scripts:
 
 ### Links
 - `no-broken-internal-links`: Every internal link (`<a href="...">`) resolves to a real file in the analysed folder.
+- `link-has-accessible-name`: Every `<a>` link provides discernible text, an `aria-label`/`aria-labelledby`, or an alt-described image.
 - `no-redirect-chains`: Internal links do not point to pages with client-side redirects (meta refresh).
 
 ### Sitemap & Robots
