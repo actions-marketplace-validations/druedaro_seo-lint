@@ -22,12 +22,14 @@ import { aiCrawlerAccess } from "./ai-crawler-access.js";
 import { extractableContent } from "./extractable-content.js";
 import { linkHasAccessibleName } from "./link-has-accessible-name.js";
 import { metaViewportAccessible } from "./meta-viewport-accessible.js";
+import { landmarkMainPresent } from "./landmark-main-present.js";
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
   singleH1,
   canonicalPresent,
   metaViewportAccessible,
+  landmarkMainPresent,
   ogTagsComplete,
   headingOrder,
   imgAltPresent,

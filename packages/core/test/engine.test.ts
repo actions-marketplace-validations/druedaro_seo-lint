@@ -14,8 +14,10 @@ const GOOD_HTML = `<!DOCTYPE html>
   <meta property="og:image" content="https://example.com/og-image.jpg">
 </head>
 <body>
-  <h1>Main Heading</h1>
-  <p>Content goes here.</p>
+  <main>
+    <h1>Main Heading</h1>
+    <p>Content goes here.</p>
+  </main>
 </body>
 </html>`;
 
