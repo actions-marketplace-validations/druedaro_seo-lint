@@ -5,6 +5,7 @@ const GOOD_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A Perfectly Valid Page Title Here</title>
   <meta name="description" content="This is a perfectly valid meta description that is long enough to pass the minimum threshold.">
   <link rel="canonical" href="https://example.com/">

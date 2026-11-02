@@ -21,11 +21,13 @@ import { llmsTxtPresent } from "./llms-txt-present.js";
 import { aiCrawlerAccess } from "./ai-crawler-access.js";
 import { extractableContent } from "./extractable-content.js";
 import { linkHasAccessibleName } from "./link-has-accessible-name.js";
+import { metaViewportAccessible } from "./meta-viewport-accessible.js";
 export const builtinRules: Rule[] = [
   titlePresent,
   descriptionPresent,
   singleH1,
   canonicalPresent,
+  metaViewportAccessible,
   ogTagsComplete,
   headingOrder,
   imgAltPresent,
