@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-11-04
+
+### Added
+- Rule `link-has-accessible-name`: Ensures all `<a>` links have discernible text, `aria-label`, `aria-labelledby`, `title`, or an alt-described image, preventing empty/icon-only links that break WCAG 2.4.4 and hurt search crawlability.
+- Rule `meta-viewport-accessible`: Validates `<meta name="viewport">` presence and ensures user zooming is not disabled via `user-scalable=no` or `maximum-scale < 2.0` (WCAG 1.4.4).
+- Rule `landmark-main-present`: Verifies documents include exactly one visible `<main>` landmark (or element with `role="main"`), improving screen reader navigation and AI/LLM primary content extraction.
+- GitHub Action display name updated to `SEO lint` for better readability across GitHub and Marketplace.
+
+### Performance
+- Optimized internal link validation from O(N) linear array scans to O(1) set lookups via `allFilesSet`, dramatically speeding up linting on large static sites.
+- Deduplicated candidate path resolution in `no-broken-internal-links` when target paths already end with `.html`.
+
+### Refactored
+- Extracted shared repeated broken links detection into `reporters/utils.ts`, removing code duplication between text and GitHub reporters.
+- Extracted 300+ Schema.org type definitions from `jsonld-valid-type.ts` into a dedicated data module (`schema-org-types.ts`).
+
 ## [0.1.4] - 2026-10-29
 
 ### Added

@@ -79,3 +79,4 @@ export const linkHasAccessibleName: Rule = {
     return findings;
   },
 };
+

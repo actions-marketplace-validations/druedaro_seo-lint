@@ -70,3 +70,4 @@ describe("meta-viewport-accessible", () => {
     expect(findings[0]?.message).toContain("restricts zoom with \"maximum-scale=1.0\"");
   });
 });
+

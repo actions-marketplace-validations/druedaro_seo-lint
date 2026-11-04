@@ -82,3 +82,4 @@ describe("link-has-accessible-name", () => {
     expect(run(htmlNoAlt)).toHaveLength(1);
   });
 });
+

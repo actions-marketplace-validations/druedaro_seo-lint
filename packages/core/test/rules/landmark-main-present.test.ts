@@ -63,3 +63,4 @@ describe("landmark-main-present", () => {
     expect(findings[0]?.message).toContain("Multiple visible <main> landmarks detected");
   });
 });
+

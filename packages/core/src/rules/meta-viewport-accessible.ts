@@ -96,3 +96,4 @@ export const metaViewportAccessible: Rule = {
     return findings;
   },
 };
+
