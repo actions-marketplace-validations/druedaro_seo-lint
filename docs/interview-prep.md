@@ -79,11 +79,11 @@ Documento vivo. Se actualiza en cada fase del proyecto, no al final. La idea es 
 
 ## Métricas para enseñar (rellenar cuando existan)
 
-- **Número de reglas implementadas:** 21 reglas completas en v1 (Meta, Estructura, i18n, Schema.org, Enlaces, Sitemap/Robots, GEO).
-- **Cobertura de tests:** 213 tests pasando al 100% (201 en `@seo-lint/core`, 12 en `@druedaro/seo-lint`).
-- **Paquete publicado en npm:** [`@druedaro/seo-lint`](https://www.npmjs.com/package/@druedaro/seo-lint) (v0.1.2) con build optimizado vía esbuild y provenance configurado.
-- **GitHub Action oficial:** Publicada y disponible en GitHub Marketplace (`druedaro/seo-lint`).
-- **Validación en proyectos reales:** Probado en `astro-seo-theme` y `forma-atelier` (26 páginas auditadas, 100% errores reales detectados, 0 falsos positivos).
+- **Número de reglas implementadas:** 24 reglas completas (Meta, Estructura, i18n, Schema.org, Enlaces, Accesibilidad, Sitemap/Robots, GEO).
+- **Cobertura de tests:** 242 tests pasando al 100% (225 en `@seo-lint/core`, 17 en `@druedaro/seo-lint`).
+- **Paquete publicado en npm:** [`@druedaro/seo-lint`](https://www.npmjs.com/package/@druedaro/seo-lint) (v0.2.0) con build optimizado vía esbuild y provenance configurado.
+- **GitHub Action oficial:** Publicada y disponible en GitHub Marketplace (`druedaro/seo-lint`) con nombre "SEO lint".
+- **Validación en proyectos reales:** Probado en `astro-seo-theme`, `forma-atelier` y `SEOCompass` (100% errores reales detectados, 0 falsos positivos tras auto-detección de adapters).
 - **Rendimiento:** Auditorías completas en menos de 1 segundo en local y CI, sin dependencias de navegadores ni red.
 
 ## Relación con el resto del portfolio
