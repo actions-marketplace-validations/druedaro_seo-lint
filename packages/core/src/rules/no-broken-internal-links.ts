@@ -36,15 +36,14 @@ export const noBrokenInternalLinks: Rule = {
         path.isAbsolute(cleanHref) ? cleanHref.slice(1) : path.join(baseDir, cleanHref)
       );
 
-      const candidates = [
-        normalizedPath,
-        path.join(normalizedPath, "index.html"),
-        normalizedPath.endsWith(".html") || normalizedPath.endsWith(".htm")
-          ? normalizedPath
-          : normalizedPath + ".html",
-      ];
+      const isHtml = normalizedPath.endsWith(".html") || normalizedPath.endsWith(".htm");
+      const candidates = isHtml
+        ? [normalizedPath, path.join(normalizedPath, "index.html")]
+        : [normalizedPath, path.join(normalizedPath, "index.html"), `${normalizedPath}.html`];
 
-      const exists = candidates.some((cand) => ctx.allFiles.includes(cand));
+      const exists = ctx.allFilesSet
+        ? candidates.some((cand) => ctx.allFilesSet!.has(cand))
+        : candidates.some((cand) => ctx.allFiles.includes(cand));
 
       if (!exists) {
         const loc = getLocation(el);

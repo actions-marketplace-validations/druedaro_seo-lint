@@ -24,13 +24,14 @@ export interface LintFileOptions {
   filePath: string;
   html: string;
   allFiles: string[];
+  allFilesSet?: Set<string>;
   isMultiLang: boolean;
   config?: SeoLintConfig;
   getFileContent?: (path: string) => string | undefined;
 }
 
 export function lintFile(options: LintFileOptions): Finding[] {
-  const { filePath, html, allFiles, isMultiLang, config, getFileContent } = options;
+  const { filePath, html, allFiles, allFilesSet, isMultiLang, config, getFileContent } = options;
 
   const doc: Document = parseHtml(html);
 
@@ -38,6 +39,7 @@ export function lintFile(options: LintFileOptions): Finding[] {
     filePath,
     html,
     allFiles,
+    allFilesSet: allFilesSet ?? new Set(allFiles),
     isMultiLang,
     getFileContent,
   };
@@ -87,11 +89,14 @@ export function lintFiles(
     return undefined;
   };
 
+  const allFilesSet = new Set(options.allFiles);
+
   for (const file of files) {
     const findings = lintFile({
       filePath: file.filePath,
       html: file.html,
       allFiles: options.allFiles,
+      allFilesSet,
       isMultiLang: options.isMultiLang,
       config: options.config,
       getFileContent,
