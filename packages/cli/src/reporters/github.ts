@@ -1,4 +1,5 @@
 import type { LintResult } from "@seo-lint/core";
+import { getRepeatedBrokenLinks } from "./utils.js";
 
 export function formatGithubReport(result: LintResult): string {
   const lines: string[] = [];
@@ -31,25 +32,10 @@ export function formatGithubReport(result: LintResult): string {
     );
   }
 
-  const brokenLinksByHref = new Map<string, Set<string>>();
-  for (const f of result.findings) {
-    if (f.ruleId === "no-broken-internal-links") {
-      const match = f.message.match(/Internal link "([^"]+)"/);
-      const href = match?.[1];
-      if (href) {
-        const files = brokenLinksByHref.get(href) ?? new Set<string>();
-        files.add(f.filePath);
-        brokenLinksByHref.set(href, files);
-      }
-    }
-  }
-
-  for (const [href, files] of brokenLinksByHref) {
-    if (files.size >= 3) {
-      lines.push(
-        `::notice::seo-lint tip: Broken link "${href}" is repeated across ${files.size} pages (likely in a shared Footer or Header component).`
-      );
-    }
+  for (const item of getRepeatedBrokenLinks(result.findings)) {
+    lines.push(
+      `::notice::seo-lint tip: Broken link "${item.href}" is repeated across ${item.count} pages (likely in a shared Footer or Header component).`
+    );
   }
 
   return lines.join("\n") + "\n";
