@@ -32,6 +32,7 @@
   "publishConfig": {"access": "public"},
   "files": [
     "packages/cli/dist",
+    "packages/cli/package.json",
     "packages/core/dist",
     "action.yml",
     "action/**",
