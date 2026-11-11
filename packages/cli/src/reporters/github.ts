@@ -38,5 +38,11 @@ export function formatGithubReport(result: LintResult): string {
     );
   }
 
+  if (result.isSpa) {
+    lines.push(
+      "::notice::seo-lint: Detected single client-rendered HTML file (SPA). seo-lint audits static HTML. Ensure dynamic routes are pre-rendered (SSG) for search and AI crawler visibility."
+    );
+  }
+
   return lines.join("\n") + "\n";
 }

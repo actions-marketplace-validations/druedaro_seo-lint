@@ -97,6 +97,11 @@ describe("cli reporters", () => {
         'Broken link "/LICENSE" is repeated across 3 pages (likely in a shared Footer or Header component).'
       );
     });
+
+    it("includes SPA notice when result is marked isSpa", () => {
+      const output = formatTextReport({ ...EMPTY_RESULT, filesAnalysed: 1, isSpa: true });
+      expect(output).toContain("Detected a single client-rendered HTML file (SPA with #root/#app)");
+    });
   });
 
   describe("json reporter", () => {
@@ -136,6 +141,11 @@ describe("cli reporters", () => {
       expect(output).toContain(
         '::notice::seo-lint tip: Broken link "/LICENSE" is repeated across 3 pages'
       );
+    });
+
+    it("includes SPA notice annotation when result is marked isSpa", () => {
+      const output = formatGithubReport({ ...EMPTY_RESULT, filesAnalysed: 1, isSpa: true });
+      expect(output).toContain("::notice::seo-lint: Detected single client-rendered HTML file (SPA)");
     });
   });
 });
