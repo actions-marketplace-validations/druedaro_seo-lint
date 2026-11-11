@@ -60,4 +60,5 @@ export interface LintResult {
   findings: Finding[];
   filesAnalysed: number;
   hasErrors: boolean;
+  isSpa?: boolean;
 }

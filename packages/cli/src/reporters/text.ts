@@ -10,11 +10,17 @@ export function formatTextReport(result: LintResult): string {
         " No HTML files found to audit. Did you build the project first? Check your target directory.\n"
       );
     }
-    return (
+    let cleanMsg = (
       pc.green("✔") +
       ` No SEO or GEO problems found across ${result.filesAnalysed} file${result.filesAnalysed === 1 ? "" : "s"
       }.\n`
     );
+    if (result.isSpa) {
+      cleanMsg +=
+        pc.yellow("⚠ Note: ") +
+        "Detected a single client-rendered HTML file (SPA with #root/#app). seo-lint audits static HTML. Ensure dynamic routes are pre-rendered (SSG) for complete crawlability and indexation.\n";
+    }
+    return cleanMsg;
   }
 
   const byFile = new Map<string, Finding[]>();
@@ -60,6 +66,13 @@ export function formatTextReport(result: LintResult): string {
     output.push(
       pc.cyan("ℹ Tip: ") +
       `Broken link "${item.href}" is repeated across ${item.count} pages (likely in a shared Footer or Header component).`
+    );
+  }
+
+  if (result.isSpa) {
+    output.push(
+      pc.yellow("⚠ Note: ") +
+      "Detected a single client-rendered HTML file (SPA with #root/#app). seo-lint audits static HTML. Ensure dynamic routes are pre-rendered (SSG) for complete crawlability and indexation."
     );
   }
 

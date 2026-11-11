@@ -69,13 +69,15 @@ describe("llms-txt-present", () => {
     expect(findings[0]?.message).toMatch(/missing a top-level H1/);
   });
 
-  it("ignores when llms.txt is not referenced or present", () => {
+  it("warns when llms.txt is missing from site root", () => {
     const ctx = createCtx({
       files: {},
       allFiles: ["index.html"],
     });
     const findings = llmsTxtPresent.check(dummyDoc, ctx);
-    expect(findings).toHaveLength(0);
+    expect(findings).toHaveLength(1);
+    expect(findings[0]?.message).toMatch(/Site is missing an llms.txt file at the root/);
+    expect(findings[0]?.severity).toBe("warning");
   });
 
   it("applies only to the first file to prevent duplicate findings across pages", () => {

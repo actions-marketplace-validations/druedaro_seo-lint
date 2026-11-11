@@ -3,9 +3,19 @@
 > Technical SEO and GEO (Generative Engine Optimization) linter for static HTML builds in CI/CD. Zero browsers, no network, ultra-fast.
 
 [![CI](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/druedaro/seo-lint/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
-[![npm downloads](https://img.shields.io/npm/dm/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/seo-lint)
+[![npm version](https://img.shields.io/npm/v/@druedaro/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/@druedaro/seo-lint)
+[![npm downloads](https://img.shields.io/npm/dm/@druedaro/seo-lint.svg?style=flat-square)](https://www.npmjs.com/package/@druedaro/seo-lint)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+---
+
+## Scope & Design Philosophy
+
+`seo-lint` is a **fast, deterministic technical linter for static HTML builds**, designed to run as a pull-request gatekeeper in CI/CD pipelines.
+
+* **Static HTML Linter, Not a Browser Audit:** Unlike Lighthouse or Screaming Frog, `seo-lint` does not spin up a heavy Chromium browser or execute runtime client JavaScript. It inspects the actual HTML payload served to search engine spiders and AI crawlers.
+* **SPAs and Client-Side Rendering:** If your project is a client-rendered Single Page Application (React, Vue) where content and headings only appear after client JavaScript runs, `seo-lint` checks the initial HTML. To ensure search bots can crawl your dynamic routes, pages should be **pre-rendered (SSG)** or server-rendered.
+* **Technical Signals, Not Ranking Guarantees:** Rules inspect deterministic technical contracts (e.g. valid Schema.org syntax, reciprocal hreflangs, robots directives, accessible anchor text). They verify technical compliance and crawlability, not subjective semantic content quality or search ranking algorithms.
 
 ---
 
@@ -117,7 +127,7 @@ Then add it to your `package.json` scripts:
 - `sitemap-valid-urls`: All URLs declared in the sitemap correspond to existing files in the build.
 
 ### GEO (Generative Engine Optimization)
-- `llms-txt-present`: Detects or validates `llms.txt` at the root with valid Markdown structure and a primary H1 title.
+- `llms-txt-present`: Verifies presence of an `llms.txt` file at the site root with valid Markdown structure and a primary H1 title.
 - `ai-crawler-access`: Checks that `robots.txt` does not inadvertently block known AI crawlers (`GPTBot`, `ClaudeBot`, etc.).
 - `extractable-content`: Verifies that the main content does not depend exclusively on client-side JavaScript rendering.
 

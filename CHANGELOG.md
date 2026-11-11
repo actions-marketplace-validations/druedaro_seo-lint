@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-11-11
+
+### Fixed
+- Fixed CLI `--version` reporting `0.1.0` due to unbundled `package.json` relative path lookup; now resolves across multiple packaging paths and includes `packages/cli/package.json` in distribution files.
+- Fixed false-negative in `llms-txt-present`: the rule now warns when `llms.txt` is missing from the site root during audit, without requiring an explicit `<link rel="describedby">` in the HTML.
+
+### Added
+- Auto-detection of un-prerendered client-side SPAs (React/Vue with `#root`, `#app`, or `#__next` mount targets in a single `index.html`) with an advisory notice explaining that raw HTML is audited and recommending SSG pre-rendering for dynamic routes.
+
+### Documentation
+- Added "Scope & Design Philosophy" section to README defining `seo-lint` as a deterministic static HTML CI gatekeeper, clarifying headless browser exclusion and technical signals vs search ranking guarantees.
+- Fixed npm badges to reference `@druedaro/seo-lint`.
+
 ## [0.2.0] - 2026-11-04
 
 ### Added
