@@ -37,8 +37,9 @@ describe("engine", () => {
       const findings = lintFile({
         filePath: "index.html",
         html: GOOD_HTML,
-        allFiles: ["index.html"],
+        allFiles: ["index.html", "llms.txt"],
         isMultiLang: false,
+        getFileContent: (p) => (p === "llms.txt" ? "# My Project\n\nDocs" : undefined),
       });
       expect(findings).toEqual([]);
     });
@@ -111,7 +112,7 @@ describe("engine", () => {
           { filePath: "bad.html", html: BAD_HTML },
         ],
         {
-          allFiles: ["good.html", "bad.html"],
+          allFiles: ["good.html", "bad.html", "llms.txt"],
           isMultiLang: false,
         },
       );

@@ -14,13 +14,21 @@ import {
 function getVersion(): string {
   try {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const pkgPath = path.resolve(__dirname, "../package.json");
-    if (fs.existsSync(pkgPath)) {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-      return pkg.version ?? "0.1.0";
+    const candidatePaths = [
+      path.resolve(__dirname, "../package.json"),
+      path.resolve(__dirname, "../../package.json"),
+      path.resolve(__dirname, "../../../package.json"),
+    ];
+    for (const pkgPath of candidatePaths) {
+      if (fs.existsSync(pkgPath)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+        if (pkg.name === "@druedaro/seo-lint" && typeof pkg.version === "string") {
+          return pkg.version;
+        }
+      }
     }
   } catch {}
-  return "0.1.0";
+  return "0.2.1";
 }
 
 function printHelp(): void {

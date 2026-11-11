@@ -81,4 +81,18 @@ describe("cli scanner", () => {
     expect(brokenLinkFindings).toHaveLength(0);
     expect(result.hasErrors).toBe(false);
   });
+
+  it("detects single client-rendered SPA with #root mount element", () => {
+    const dist = path.join(tmpDir, "spa-dist");
+    fs.mkdirSync(dist, { recursive: true });
+
+    fs.writeFileSync(
+      path.join(dist, "index.html"),
+      "<!DOCTYPE html><html><head><title>SPA</title></head><body><div id=\"root\"></div><script src=\"/bundle.js\"></script></body></html>"
+    );
+
+    const result = scanAndLint({ distDir: dist });
+    expect(result.filesAnalysed).toBe(1);
+    expect(result.isSpa).toBe(true);
+  });
 });

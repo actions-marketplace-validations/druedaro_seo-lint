@@ -75,6 +75,17 @@ function collectAllFiles(dir: string, baseDir: string = dir): string[] {
   return results;
 }
 
+function isClientSpa(htmlFiles: Array<{ filePath: string; html: string }>): boolean {
+  if (htmlFiles.length !== 1) return false;
+  const first = htmlFiles[0];
+  if (!first) return false;
+  const normalizedPath = first.filePath.replace(/\\/g, "/");
+  if (!normalizedPath.endsWith("index.html")) return false;
+
+  const html = first.html;
+  return /<div[^>]+id=["'](root|app|__next)["'][^>]*>\s*<\/div>/i.test(html);
+}
+
 export function scanAndLint(options: ScanOptions): LintResult {
   let { distDir, config, ignore = [] } = options;
   let absDist = path.resolve(distDir);
@@ -130,9 +141,16 @@ export function scanAndLint(options: ScanOptions): LintResult {
     }
   }
 
-  return lintFiles(htmlFiles, {
+  const isSpa = isClientSpa(htmlFiles);
+
+  const result = lintFiles(htmlFiles, {
     allFiles,
     isMultiLang,
     config,
   });
+
+  return {
+    ...result,
+    isSpa,
+  };
 }

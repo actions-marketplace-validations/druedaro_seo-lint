@@ -24,20 +24,26 @@ function check(doc: Document, ctx: RuleContext): Finding[] {
     (f) => f === "llms.txt" || f === "/llms.txt" || f.endsWith("/llms.txt")
   );
 
-  if (describedByLlms && !content && !hasFileInAll) {
-    const loc = getLocation(describedByLlms);
-    findings.push({
-      ruleId: meta.id,
-      severity: meta.severity,
-      category: meta.category,
-      message: "Linked llms.txt file does not exist at site root.",
-      filePath: ctx.filePath,
-      ...loc,
-    });
-    return findings;
-  }
-
   if (!content && !hasFileInAll) {
+    if (describedByLlms) {
+      const loc = getLocation(describedByLlms);
+      findings.push({
+        ruleId: meta.id,
+        severity: meta.severity,
+        category: meta.category,
+        message: "Linked llms.txt file does not exist at site root.",
+        filePath: ctx.filePath,
+        ...loc,
+      });
+    } else {
+      findings.push({
+        ruleId: meta.id,
+        severity: meta.severity,
+        category: meta.category,
+        message: "Site is missing an llms.txt file at the root for AI crawlers and LLM indexing.",
+        filePath: ctx.filePath,
+      });
+    }
     return findings;
   }
 
